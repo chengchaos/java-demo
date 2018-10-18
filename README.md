@@ -22,13 +22,13 @@ $ spring init my-timer
     </repositories>
 
 
-	<build>
-		<plugins>
+    <build>
+        <plugins>
             <!-- Spring-Boot-Maven -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+	    <plugin>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-maven-plugin</artifactId>
+	    </plugin>
 
 
             <!-- Java 编译 -->
@@ -52,9 +52,8 @@ $ spring init my-timer
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
-
-		</plugins>
-	</build>
+	</plugins>
+    </build>
 ```
 
 编辑 application.properties 文件，添加：
