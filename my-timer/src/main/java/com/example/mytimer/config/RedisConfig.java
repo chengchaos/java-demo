@@ -35,14 +35,11 @@ public class RedisConfig {
 
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
-
-        RedisSerializer stringSerializer = new StringRedisSerializer();
+        RedisSerializer<String> stringSerializer = new StringRedisSerializer();
         redisTemplate.setKeySerializer(stringSerializer);
         redisTemplate.setValueSerializer(stringSerializer);
         redisTemplate.setHashKeySerializer(stringSerializer);
         redisTemplate.setHashValueSerializer(stringSerializer);
-
-
         return redisTemplate;
     }
 }

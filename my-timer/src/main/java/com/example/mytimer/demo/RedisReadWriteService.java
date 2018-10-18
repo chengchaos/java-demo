@@ -29,16 +29,16 @@ public class RedisReadWriteService {
 
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
 
     public void save() {
+        LOGGER.info("save");
         redisTemplate.boundValueOps("chengchao").set("好人");
 
     }
 
     public String read() {
         Object o = redisTemplate.boundValueOps("chengchao").get();
-
         return Objects.nonNull(o) ? o.toString() : "null";
     }
 }
