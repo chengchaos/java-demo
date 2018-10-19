@@ -3,8 +3,6 @@ package com.example.mytimer.demo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -34,15 +32,19 @@ public class RedisReadWriteService {
 
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private StringRedisTemplate stringRedisTemplate;
 
+    private RedisTemplate<String, String> redisTemplate;
 
     public void save() {
-        LOGGER.info("redisTemplate -> {}", redisTemplate);
-        redisTemplate.boundValueOps("chengchao").set("好人");
+
+        LOGGER.info("stringRedisTemplate -> {}", stringRedisTemplate);
+
+        LOGGER.info("save");
+        stringRedisTemplate.boundValueOps("chengchao").set("好人");
 
 
-        String res = redisTemplate.execute((RedisCallback<String>) connection -> {
+        String res = stringRedisTemplate.execute((RedisCallback<String>) connection -> {
             Long size = connection.dbSize();
             // Can cast to StringRedisConnection if using a StringRedisTemplate
             StringRedisConnection stringRedisConnection = (StringRedisConnection) connection;
@@ -54,8 +56,8 @@ public class RedisReadWriteService {
     }
 
     public String read() {
-        LOGGER.info("redisTemplate -> {}", redisTemplate);
-        Object o = redisTemplate.boundValueOps("chengchao2").get();
+        LOGGER.info("stringRedisTemplate -> {}", stringRedisTemplate);
+        Object o = stringRedisTemplate.boundValueOps("chengchao2").get();
         return Objects.nonNull(o) ? o.toString() : "null";
     }
 }
