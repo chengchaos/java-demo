@@ -2,13 +2,16 @@ package com.example.mytimer;
 
 import com.example.mytimer.demo.QuartzSchedulerDemo;
 import com.example.mytimer.demo.RedisReadWriteService;
+import com.example.mytimer.jredis.RedisHelper;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import redis.clients.jedis.JedisCluster;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
@@ -33,6 +36,23 @@ public class DemoApplication {
         } catch (SchedulerException e) {
             LOGGER.error("SchedulerException : ", e);
         }
+
+        JedisCluster jedisCluster = context.getBean(JedisCluster.class);
+
+        System.err.println("JedisCluster -> "+ jedisCluster);
+
+        String s;
+        for (int i = 0 ; i < 2; i++) {
+            //jedisCluster.set(i + "", "chengchao" + i);
+//            s = jedisCluster.get(i + "");
+
+            boolean b1 = RedisHelper.tryGetDistributedLock(jedisCluster, "mykey", "i", 10000);
+            boolean b2 = RedisHelper.releaseDistributedLock(jedisCluster, "mykey", "i");
+            LOGGER.info("b1 : {}, b2 : {}", b1, b2);
+        }
+
+
+
 
 
         //TimerDemo.execute();
