@@ -1,0 +1,23 @@
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://127.0.0.1:8761/eureka/
+    instance:
+      prefer-ip-address: true # 将自己的 IP 注册到 Eureka Server 上面。
+
+#console-available: true
+
+spring:
+  profiles: dev
+  http:
+    multipart:
+    maxFileSize:  10Mb
+    maxRequestSize: 100Mb
+#  output:
+#    ansi:
+#      enabled: ALWAYS
+
+

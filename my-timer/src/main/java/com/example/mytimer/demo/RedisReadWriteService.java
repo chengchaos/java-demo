@@ -1,15 +1,14 @@
 package com.example.mytimer.demo;
 
+import java.util.Objects;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.StringRedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * <p>
@@ -34,8 +33,6 @@ public class RedisReadWriteService {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
 
-    private RedisTemplate<String, String> redisTemplate;
-
     public void save() {
 
         LOGGER.info("stringRedisTemplate -> {}", stringRedisTemplate);
@@ -44,12 +41,13 @@ public class RedisReadWriteService {
         stringRedisTemplate.boundValueOps("chengchao").set("好人");
 
 
-        String res = stringRedisTemplate.execute((RedisCallback<String>) connection -> {
+        Long res = stringRedisTemplate.execute((RedisCallback<Long>) connection -> {
             Long size = connection.dbSize();
+            LOGGER.info("dbSize = {}", size);
             // Can cast to StringRedisConnection if using a StringRedisTemplate
-            StringRedisConnection stringRedisConnection = (StringRedisConnection) connection;
-            System.err.println("stringRedisConnection: "+ stringRedisConnection);
-            return stringRedisConnection.get("chengchao");
+            StringRedisConnection conn = (StringRedisConnection) connection;
+            System.err.println("stringRedisConnection: "+ conn);
+            return conn.incr("my-incr");
         });
 
         System.out.println(">>>>>>>>>" + res);

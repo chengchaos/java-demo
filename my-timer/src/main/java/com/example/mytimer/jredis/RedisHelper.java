@@ -1,13 +1,13 @@
 package com.example.mytimer.jredis;
 
+import java.util.Collections;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import redis.clients.jedis.Jedis;
+
 import redis.clients.jedis.JedisClusterScriptingCommands;
 import redis.clients.jedis.JedisCommands;
 import redis.clients.jedis.ScriptingCommands;
-
-import java.util.Collections;
 
 /**
  * <p>
@@ -56,7 +56,7 @@ public class RedisHelper {
      * @param lockKey 锁 Key
      * @param requestId 请求标识
      * @param expireTimeMillis 过期时间（毫秒）
-     * @return 成功： true； 失败： false；
+     * @return 成功获取到锁： true； 失败： false；
      */
     public static boolean tryGetDistributedLock(JedisCommands jedis, String lockKey, String requestId, int expireTimeMillis) {
 
@@ -76,15 +76,23 @@ public class RedisHelper {
      */
     public static boolean releaseDistributedLock(ScriptingCommands jedis, String lockKey, String requestId) {
 
-        Object result = jedis.eval(SCRIPT, Collections.singletonList(lockKey),
+        Object result = jedis.eval(SCRIPT, 
+                Collections.singletonList(lockKey),
                 Collections.singletonList(requestId));
+        
+        LOGGER.debug("result : {}", result);
+        LOGGER.info("result : {}", result);
         return (RELEASE_SUCCESS.equals(result));
     }
 
     public static boolean releaseDistributedLock(JedisClusterScriptingCommands jedis, String lockKey, String requestId) {
 
-        Object result = jedis.eval(SCRIPT, Collections.singletonList(lockKey),
+        Object result = jedis.eval(SCRIPT, 
+                Collections.singletonList(lockKey),
                 Collections.singletonList(requestId));
+        
+        LOGGER.debug("result : {}", result);
+        LOGGER.info("result : {}", result);
         return (RELEASE_SUCCESS.equals(result));
     }
 }

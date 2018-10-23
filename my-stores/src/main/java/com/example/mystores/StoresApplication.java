@@ -20,7 +20,6 @@ public class StoresApplication {
 
 	public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(StoresApplication.class, args);
-
-        LOGGER.info("Eureka is started.");
+        LOGGER.info("Eureka is started. {}", context);
     }
 }

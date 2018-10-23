@@ -1,0 +1,15 @@
+server:
+  port: 8110
+
+spring:
+  profiles:
+    active: @project.env@
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
