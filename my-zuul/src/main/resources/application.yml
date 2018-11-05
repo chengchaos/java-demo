@@ -1,3 +1,12 @@
+server:
+  port: 8180
+
+#### Spring
+spring:
+  profiles:
+    active: @project.env@
+
+#### Eureka :
 eureka:
   instance:
     prefer-ip-address: true # 将自己的 IP 注册到 Eureka Server 上面。
@@ -8,16 +17,11 @@ eureka:
     serviceUrl:
       defaultZone: http://127.0.0.1:8761/eureka/
 
-#console-available: true
-
-spring:
-  profiles: dev
-  http:
-    multipart:
-    maxFileSize:  10Mb
-    maxRequestSize: 100Mb
-#  output:
-#    ansi:
-#      enabled: ALWAYS
-
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
 
