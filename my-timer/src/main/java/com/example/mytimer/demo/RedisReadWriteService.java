@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
  * @author chengchao - 18-10-18 下午7:26 <br />
  * @since 1.0
  */
-@Service
+//@Service
 public class RedisReadWriteService {
 
 

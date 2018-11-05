@@ -37,7 +37,7 @@ import java.util.Date;
  * @author chengchao - 18-10-18 下午2:17 <br />
  * @since 1.0
  */
-@Component
+//@Component
 public class SpringScheduledDemo {
 
 

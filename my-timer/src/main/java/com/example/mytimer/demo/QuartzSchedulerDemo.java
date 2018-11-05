@@ -23,7 +23,7 @@ import java.util.Map;
  * @author chengchao - 18-10-18 下午2:59 <br />
  * @since 1.0
  */
-@Component
+//@Component
 public class QuartzSchedulerDemo {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzSchedulerDemo.class);
