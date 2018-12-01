@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -46,9 +48,22 @@ public class WebSocketClient {
     }
 
     @OnMessage
-    public void onMessage(String message) {
+    public void onTextMessage(String message) {
 
-        LOGGER.info("<<< : {}", message);
+        LOGGER.info("<<< : {} say: {}", message.getClass() , message.toString());
+    }
+
+    @OnMessage
+    public void onPongMessage(PongMessage message) {
+
+        ByteBuffer applicationData = message.getApplicationData();
+        if (applicationData != null) {
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("<<< : {} say: {}", message.getClass() , applicationData);
+            }
+        } else {
+            LOGGER.info("<<< ");
+        }
     }
 
     @OnClose
@@ -80,6 +95,9 @@ public class WebSocketClient {
     public void close(Session session, String reasonPhrase) {
         if (StringUtil.isBlank(reasonPhrase)) {
             reasonPhrase = "bye ...";
+        }
+        if (session == null || !session.isOpen()) {
+            return;
         }
         try {
             session.close(new CloseReason(CloseReason.CloseCodes.NORMAL_CLOSURE, reasonPhrase ));
