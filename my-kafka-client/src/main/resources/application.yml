@@ -1,0 +1,18 @@
+server:
+  port: 8130
+
+spring:
+  profiles:
+    active: @project.env@
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+kafka:
+  broker:
+    address: matrix420:9092
