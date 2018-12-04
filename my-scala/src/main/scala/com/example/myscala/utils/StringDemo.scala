@@ -235,7 +235,7 @@ class StringDemo {
     val obj = s: Object
     val arr:Array[String] = Array("1", "2", "3")
 
-    var arr2 = arr: _*
+    // var arr2 = arr: _*
 
     var name = null.asInstanceOf[String]
 
