@@ -1,0 +1,202 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        
+        
+        <title>WebSocket Test</title> 
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+        <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+        <link rel="stylesheet" 
+            href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+            crossorigin="anonymous" />
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+
+
+    </head>
+
+    <body>
+
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header"><a class="navbar-brand" href="#">用于测试</a></div>
+            
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!--
+                    <li class="active">
+                        <a href="#">Link1 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">Link2</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                        </ul>
+                    </li>
+
+                    -->
+                </ul>
+                
+                <!--
+                    <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Link3</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                    </li>
+                </ul>
+                -->
+              
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1>WebSocket Test！</h1>
+                    <form class="form-horizontal" id="form1" method="POST" action="#">
+                        <div class="form-group">
+                            <label for="message" class="col-sm-2 control-label">内容</label>
+                            <div class="col-sm-10">
+                                <!-- value="hello" -->
+                            <textarea class="form-control" id="message" name="message" 
+                                placeholder="message"></textarea>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                            <button id="btn1" type="button" class="btn btn-default">发送</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="col-sm-2 control-label">返回结果</label>
+                            <div class="col-sm-10">
+                                <div id="output"></div>
+                            </div>
+                                
+                        </div>
+                        
+                    </form>
+                    <hr />
+                </div> <!-- class="col-xs-12" -->
+            </div> <!-- row -->
+        </div>
+
+
+    
+
+        <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script src="js/jquery.form.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+            crossorigin="anonymous"></script>
+        <script language="javascript"type="text/javascript"> 
+            //检查浏览器是否支持WebSocket
+            if (window.WebSocket){
+                console.log('This browser supports WebSocket');
+            } else {
+                console.log('This browser does not supports WebSocket');
+            }
+
+            var wsUri ="ws://echo.websocket.org/";
+            wsUri = "ws://127.0.0.1:8808/ctrl/ws-command/web/v1/A914191AD5E9491BAF40218A139F8D7A";
+            var output; 
+             
+             /**
+              * WebSocket对象一共支持四个消息 onopen, onmessage, onclose和onerror
+              *
+              */
+            function init() {
+                output = document.getElementById("output");
+                testWebSocket();
+            } 
+          
+            function testWebSocket() {
+                websocket = new WebSocket(wsUri);
+                websocket.onopen = function(evt) {
+                    onOpen(evt)
+                };
+                websocket.onclose = function(evt) {
+                    onClose(evt)
+                };
+                websocket.onmessage = function(evt) {
+                    onMessage(evt)
+                };
+                websocket.onerror = function(evt) {
+                    onError(evt)
+                };
+            } 
+          
+            function onOpen(evt) {
+                writeToScreen("CONNECTED");
+                //doSend("WebSocket rocks");
+            } 
+          
+            function onClose(evt) {
+                writeToScreen("DISCONNECTED");
+            } 
+          
+            function onMessage(evt) {
+                writeToScreen('<span style="color: blue;">RESPONSE: '+ evt.data+'</span>');
+                //websocket.close();
+            } 
+          
+            function onError(evt) {
+                writeToScreen('<span style="color: red;">ERROR:</span> '+ evt.data);
+                websocket.close();
+            } 
+          
+            function doSend(message) {
+                writeToScreen("SENT: " + message); 
+                websocket.send(message);
+            } 
+          
+            function writeToScreen(message) {
+                var pre = document.createElement("p");
+                pre.style.wordWrap = "break-word";
+                pre.innerHTML = message;
+                output.appendChild(pre);
+            } 
+          
+            window.addEventListener("load", init, false); 
+            $(document).ready(function () {
+                
+                var message = $("#message");
+                var btn1 = $("#btn1");
+                var form1 = $("#form1");
+
+                $(form1).bind('submit', function(e) {
+                    output.html("");
+                    e.preventDefault(); // <!-- important -->
+
+                    
+                });
+
+                btn1.on("click", function () {
+                    var msg = message.val()
+                    console.log("msg = ", msg);
+                    doSend(msg);
+
+                });
+        
+            });
+        </script> 
+    </body>
+</html>

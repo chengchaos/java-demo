@@ -1,0 +1,285 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        
+        
+        <title>WebSocket Test</title> 
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+        <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+        <link rel="stylesheet" 
+            href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+            crossorigin="anonymous" />
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+
+
+    </head>
+
+    <body>
+
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header"><a class="navbar-brand" href="#">用于测试</a></div>
+            
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <!--
+                    <li class="active">
+                        <a href="#">Link1 <span class="sr-only">(current)</span></a></li>
+                    <li><a href="#">Link2</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                        </ul>
+                    </li>
+
+                    -->
+                </ul>
+                
+                <!--
+                    <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Link3</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                    </li>
+                </ul>
+                -->
+              
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <form class="form-horizontal" id="form0" method="get" action="#">
+
+                        <div class="form-group">
+                            <label for="url" class="col-sm-2 control-label">URL:</label>
+                            <div class="col-sm-10">
+                                <!-- value="hello" 127.0.0.1-->
+                            <input type="text" id="url" value="ws://42.159.92.113:8808/ctrl/ws-command/app/v1/A914191AD5E9491BAF40218A139F8D7A/100" class="form-control"/>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <button id="connect" type="button" class="btn btn-default" >连接</button>
+                            <button id="close" type="button" class="btn btn-default" disabled="disabled">断开</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-12">
+                    <h1>WebSocket Test！</h1>
+                    
+                    <form class="form-horizontal" id="form1" method="POST" action="#">
+                        <div class="form-group">
+                            <label for="message" class="col-sm-2 control-label">内容</label>
+                            <div class="col-sm-10">
+                                <!-- value="hello" -->
+                            <textarea class="form-control" id="message" name="message" 
+                                placeholder="message">{"cid":"AIR_CONDITION","data":{"model":1,"open":0,"temp":24.0},"reqId":1,"seq":"0a67117818394177"}</textarea>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                            <button id="btn1" type="button" class="btn btn-default" disabled="disabled">发送</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="message" class="col-sm-2 control-label">返回结果 
+                                <a href="javascript:void(0)" id="clearOutput">清空</a>
+                            </label>
+                            <div class="col-sm-10">
+                                <div id="output"></div>
+                            </div>
+                                
+                        </div>
+                        
+                    </form>
+                    <hr />
+                </div> <!-- class="col-xs-12" -->
+            </div> <!-- row -->
+        </div>
+
+
+    
+
+        <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script src="js/jquery.form.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+            crossorigin="anonymous"></script>
+        <script language="javascript"type="text/javascript"> 
+
+
+
+            //var wsUri ="ws://echo.websocket.org/";
+            //wsUri = "ws://127.0.0.1:8808/ctrl/ws-command/app/v1/A914191AD5E9491BAF40218A139F8D7A/100";
+
+            //wsUri = "ws://42.159.92.113:8808/ctrl/ws-command/app/v1/A914191AD5E9491BAF40218A139F8D7A/100";
+            var output; 
+             
+            
+            
+            //检查浏览器是否支持WebSocket
+            
+
+             /**
+              * WebSocket对象一共支持四个消息 onopen, onmessage, onclose和onerror
+              *
+              */
+            function init() {
+                output = document.getElementById("output");
+                writeToScreen("Ready");
+                if (window.WebSocket){
+                    console.log('This browser supports WebSocket');
+                    writeToScreen('This browser supports WebSocket')
+                } else {
+                    console.log('This browser does not supports WebSocket');
+                    writeToScreen('This browser does not supports WebSocket')
+                }
+                //testWebSocket();
+            } 
+          
+            function testWebSocket(wsUri) {
+                websocket = new WebSocket(wsUri);
+                websocket.onopen = function(evt) {
+                    onOpen(evt)
+                };
+                websocket.onclose = function(evt) {
+                    onClose(evt)
+                };
+                websocket.onmessage = function(evt) {
+                    onMessage(evt)
+                };
+                websocket.onerror = function(evt) {
+                    onError(evt)
+                };
+            } 
+          
+            function onOpen(evt) {
+                writeToScreen("CONNECTED");
+                //doSend("WebSocket rocks");
+                $("#connect").prop("disabled", "disabled");
+                $("#close").prop("disabled", "");
+                $("#btn1").prop("disabled", "");
+            } 
+          
+            function onClose(evt) {
+                writeToScreen("DISCONNECTED");
+                $("#connect").prop("disabled", "");
+                $("#close").prop("disabled", "disabled");
+                $("#btn1").prop("disabled", "disabled");
+            } 
+          
+            function onMessage(evt) {
+                writeToScreen('<span style="color: blue;">RESPONSE: <br />'+ evt.data+'</span>');
+                //websocket.close();
+            } 
+          
+            function onError(evt) {
+                writeToScreen('<span style="color: red;">ERROR: <br /> '+ evt.data +'</span>');
+                websocket.close();
+            } 
+          
+            function doSend(message) {
+                writeToScreen("SENT: <br />" + message); 
+                websocket.send(message);
+            } 
+          
+            function writeToScreen(message) {
+                var pre = document.createElement("p");
+                pre.style.wordWrap = "break-word";
+                pre.innerHTML = message;
+                output.appendChild(pre);
+            } 
+
+            function websocketWhatherConnnected(websocket) {
+                try {  
+                    websocket.send(0xFF); 
+                } catch (e) {  
+                    console.error(e);
+                    return false;
+                }
+                return true;
+            }
+          
+            window.addEventListener("load", init, false); 
+            $(document).ready(function () {
+                
+                $(form1).bind('submit', function(e) {
+                    output.html("");
+                    e.preventDefault(); // <!-- important -->
+                });
+
+
+                var message = $("#message");
+                var btn1 = $("#btn1");
+                var form1 = $("#form1");
+
+                var wsConnect = $("#connect");
+                var wsClose = $("#close");
+                var clearOutput = $("#clearOutput");
+
+                wsConnect.on("click", function() {
+                    var url = $("#url").val();
+                    console.log(url);
+                    testWebSocket(url);
+                    if (websocket && websocket.readyState === websocket.CONNECTING ) {
+                        // CONNECTING, OPEN, CLOSING, CLOSED
+                        console.log(websocket.readyState)
+                        console.log("CONNECTING: ", websocket.CONNECTING)
+                        console.log("OPEN: ", websocket.OPEN)
+                        console.log("CLOSING: ", websocket.CLOSING)
+                        console.log("CLOSED: ", websocket.CLOSED)
+
+                    }
+                });
+                wsClose.on("click", function() {
+                    if (websocket && websocket.readyState !== websocket.CLOSED ) {
+                        console.log(websocket.readyState)
+                        websocket.close();
+                        console.log(websocket.readyState)
+                    }
+                });
+
+       
+                btn1.on("click", function () {
+                    var msg = message.val()
+                    doSend(msg);
+                    return;
+
+                    if (websocketWhatherConnnected(websocket)) {
+                        doSend(msg);
+                    } else {
+                        testWebSocket($("#url").val())
+                        doSend(msg);
+                    }
+                    
+                });
+
+                clearOutput.on("click", function () {
+                    $("#output").html("");
+                });
+        
+            });
+        </script> 
+    </body>
+</html>

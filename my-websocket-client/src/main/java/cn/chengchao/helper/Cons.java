@@ -19,8 +19,8 @@ public class Cons {
         token = "A914191AD5E9491BAF40218A139F8D7A";
         vin = "100";
 
+        url = "ws://127.0.0.1:8808/ctrl/ws-command/app/v1/";
         url = "ws://42.159.92.113/ctrl/ws-command/app/v1/";
-        url = "ws://127.0.0.1:8080/ctrl/ws-command/app/v1/";
 
 
 

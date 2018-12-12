@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SMS 发送短信测试</title>
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+        <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+        <link rel="stylesheet" 
+            href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" 
+            crossorigin="anonymous" />
+        <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+
+
+    </head>
+
+    <body>
+
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                
+                    <a class="navbar-brand" href="#">用于测试</a>
+                    </div>
+                
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <!--
+                        <li class="active">
+                            <a href="#">Link1 <span class="sr-only">(current)</span></a></li>
+                        <li><a href="#">Link2</a></li>
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                            </ul>
+                        </li>
+
+                        -->
+                    </ul>
+                    
+                    <!--
+                        <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">Link3</a></li>
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                        </li>
+                    </ul>
+                    -->
+                  
+                    </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+            </nav>
+
+
+            <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+            <h1>国金短信测试！</h1>
+
+            <form class="form-horizontal" id="form1" method="POST" action="https://www.chengchaos.cn/api/open/send-sms-messages">
+                <div class="form-group">
+                    <label for="iccid" class="col-sm-2 control-label">ICCID</label>
+                    <div class="col-sm-10">
+                        <!-- value="89860617040065863831" -->
+                    <input type="text" class="form-control" name="iccid" id="iccid" 
+                        
+                        placeholder="iccid">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message" class="col-sm-2 control-label">内容</label>
+                    <div class="col-sm-10">
+                        <!-- value="hello" -->
+                    <input type="text" class="form-control" id="message" name="message" 
+                        
+                        placeholder="message">
+                    </div>
+                </div>
+            <!--
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                        <input type="checkbox"> Remember me
+                        </label>
+                    </div>
+                    </div>
+                </div>
+            -->                
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btn1" type="submit" class="btn btn-default">发送</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message" class="col-sm-2 control-label">返回结果</label>
+                    <div class="col-sm-10">
+                        <div id="output"></div>
+                    </div>
+                        
+                </div>
+                
+            </form>
+            <hr />
+            
+            <form class="form-horizontal" id="form2" method="GET" action="https://www.chengchaos.cn/api/open/search-result">
+            
+                <div class="form-group">
+                    <label for="smsMsgId" class="col-sm-2 control-label">SMS-MSG-ID</label>
+                    <div class="col-sm-10">
+                        <!-- value="89860617040065863831" -->
+                    <input type="text" class="form-control" name="smsMsgId" id="smsMsgId" 
+                        placeholder="smsMsgId">
+                    </div>
+                </div>
+        
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                    <button id="btn2" type="submit" class="btn btn-default">查询</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message" class="col-sm-2 control-label">返回结果</label>
+                    <div class="col-sm-10">
+                        <div id="output2"></div>
+                    </div>
+                    
+                </div>
+                
+            </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+    <h1>江铃短信测试！</h1>
+            
+    <form class="form-horizontal" id="form21" method="POST" action="https://www.chengchaos.cn/api/open/send-jmev-messages">
+        <div class="form-group">
+            <label for="sim21" class="col-sm-2 control-label">SIM 卡号</label>
+            <div class="col-sm-10">
+                <!-- value="89860617040065863831" -->
+            <input type="text" class="form-control" id="sim21" name="sim21"
+                placeholder="sim">
+            </div>
+        </div>
+  
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+            <button id="btn21" type="submit" class="btn btn-default">发送</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="message" class="col-sm-2 control-label">返回结果</label>
+            <div class="col-sm-10">
+                <div id="output21"></div>
+            </div>
+                
+        </div>
+        
+    </form>
+    
+        </div>
+    </div>
+</div>
+
+
+        <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+        <script src="js/jquery.form.js"></script>
+        <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
+            crossorigin="anonymous"></script>
+        <script>
+            
+            $(document).ready(function () {
+                var btn1 = $("#btn1");
+                var form1 = $("#form1");
+                var output = $("#output");
+                $(form1).bind('submit', function(e) {
+                    output.html("");
+                    e.preventDefault(); // <!-- important -->
+
+                    var iccidVal = $("#iccid").val();
+                    if (iccidVal === "") {
+                        output.html("<span style='color:red'>请输入 ICCID 值</span>")
+                        return;
+                    }
+                    $(this).ajaxSubmit({
+                        target: '#output'
+                    });
+                });
+                var btn2 = $("#btn2")
+                var smsMsgId = $("#smsMsgId")
+                $(form2).bind('submit', function(e) {
+                    output.html("");
+                    e.preventDefault(); // <!-- important -->
+                    var smsMsgIdVal = smsMsgId.val()
+                    if (smsMsgIdVal === "") {
+                        alert("请输入 sms msg id")
+                        smsMsgId.focus()
+                        return;
+                    }
+                    $(this).ajaxSubmit({
+                        target: '#output2'
+                    });                 
+                });
+
+                // 江铃
+                var btn21 = $("#btn21");
+                var form21 = $("#form21");
+                var output21 = $("#output21");
+            
+                $(form21).bind('submit', function(e) {
+                    output.html("");
+                    e.preventDefault(); // <!-- important -->
+
+                    var simNo = $("#sim21").val();
+                    console.log(simNo);
+
+                    if (simNo === "") {
+                        output21.html("<span style='color:red'>请输入 SIM 卡号</span>")
+                        return;
+                    }
+                    
+                    $(this).ajaxSubmit({
+                        target: '#output21'
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
