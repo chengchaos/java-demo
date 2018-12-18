@@ -7,9 +7,8 @@ import akka.actor.ActorSystem;
 import akka.http.javadsl.ConnectHttp;
 import akka.http.javadsl.Http;
 import akka.http.javadsl.OutgoingConnection;
-import akka.http.javadsl.model.HttpRequest;
-import akka.http.javadsl.model.HttpResponse;
-import akka.http.javadsl.model.ResponseEntity;
+import akka.http.javadsl.model.*;
+import akka.http.javadsl.model.headers.RawHeader;
 import akka.stream.ActorMaterializer;
 import akka.stream.Materializer;
 import akka.stream.javadsl.Flow;
@@ -65,23 +64,31 @@ public class AkkaHttpClientTest {
 
         Sink<HttpResponse, CompletionStage<HttpResponse>> head = Sink.<HttpResponse>head();
 
+        HttpRequest httpRequest = HttpRequest.create("/kao")
+                .withMethod(HttpMethods.GET)
+                .addHeader(RawHeader.create("hello", "world"));
 
-
-
-        CompletionStage<HttpResponse> respFuture = Source.single(HttpRequest.create("/"))
+        CompletionStage<HttpResponse> respFuture = Source.single(httpRequest)
                 .via(connFlow)
                 .runWith(head, materializer);
 
 //        respFuture.thenAccept(response -> {
 //            LOGGER.info("response : {}", response);
+//            StatusCode status = response.status();
+//            LOGGER.info("status: {}", status);
+//            response.getHeaders().iterator().forEachRemaining(httpHeader -> {
+//                LOGGER.info("name : {} ==> {}", httpHeader.name(),httpHeader.value());
+//            });
 //            response.entity()
 //                    .getDataBytes()
 //                    .runWith(Sink.foreach(connect -> {
 //                        String string = connect.utf8String();
-//                        System.out.println("string >>>>" + string);
+//                        System.out.println("string >>>>" + string.trim().substring(0, 20) + " ...");
 //                        Assert.assertTrue(StringUtil.isNotBlank(string));
 //                    }), materializer);
 //        });
+
+        System.out.println("============");
 
         try {
             HttpResponse httpResponse = respFuture.toCompletableFuture().get(10L, TimeUnit.SECONDS);
@@ -92,15 +99,31 @@ public class AkkaHttpClientTest {
             System.out.println("entity: ===> "+ entity.getClass());
             Source<ByteString, Object> dataBytes = entity.getDataBytes();
 
-            CompletionStage<Done> doneCompletionStage = dataBytes.runWith(Sink.foreach(bs -> {
+            Sink<Object, CompletionStage<Object>> sink2 = Sink.<Object>head();
 
-                String result = bs.utf8String();
-                System.out.println(">>>> " +result.length());
+//            Flow<ByteString, String, CompletionStage<OutgoingConnection>> flow2 =
+//                    Flow.fromFunction((byteString) -> byteString.utf8String());
+//
+//            dataBytes.single(dataBytes)
+//                    .via(flow2)
+//                    .runWith(sink2);
+            CompletionStage<ByteString> byteStringCompletionStage = dataBytes.runWith(Sink.head(), materializer);
+
+            ByteString byteString = byteStringCompletionStage.toCompletableFuture()
+                    .get(5L, TimeUnit.SECONDS);
+
+            System.out.println("++++++++++" + byteString.utf8String().trim().substring(0, 50));
 
 
-            }), materializer);
-
-            Done done = doneCompletionStage.toCompletableFuture().get(10L, TimeUnit.SECONDS);
+//            CompletionStage<Done> doneCompletionStage = dataBytes.runWith(Sink.foreach(bs -> {
+//
+//                String result = bs.utf8String();
+//                System.out.println(">>>> " +result.length());
+//
+//
+//            }), materializer);
+//
+//            Done done = doneCompletionStage.toCompletableFuture().get(10L, TimeUnit.SECONDS);
             System.out.println(">>>>>>>>>>>>>>>>>>>>>>>...");
 
 

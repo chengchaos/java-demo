@@ -123,6 +123,7 @@ public class AskDemoArticleParser extends AbstractActor {
             }
         }
 
+//        return context().actorOf(Props.create(MyActor.class, () -> new MyActor()));
         return context().actorOf(Props.create(MyActor.class, () -> new MyActor()));
 
     }
