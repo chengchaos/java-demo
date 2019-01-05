@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+scan: 当此属性值为 true 时， 配置文件如果发生改变，将会被重新加载；默认: true
+scanPeriod: 检查文件是否修改的时间间隔，单位是毫秒； 当 scan == true 时生效；默认 1 分钟
+debug: 值为 true 时，打印 logback 内部的日志信息，默认: false
+-->
 <configuration debug="false" scan="false" scanPeriod="120 seconds">
+
+    <!--
+    configuration 有三个子节点： appender / logger / root
+    -->
+
+    <!-- 每个 logger 都关联到 logger 上下文， 默认名称 default 可以用 contextName 修改 -->
+    <contextName>akka-demo-002</contextName>
+
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -9,6 +22,14 @@
         </encoder>
     </appender>
 
+    <!--
+    logger 用来设置某一个包或者类的日志级别、指定 appender
+    logger 有一个 name 属性， 一个可选的 level 和一个可选的 addtivity 属性
+    level: 用来设置打印级别，大小写无关：
+        TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF，
+        还有一个特俗值 INHERITED 或者同义词 NULL ，代表强制执行上级的级别。
+    addtivity: 是否向上级 loger 传递打印信息。默认是 true。
+    -->
     <logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR"/>
     <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>
     <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>
@@ -16,7 +37,7 @@
     <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>
     <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>
     <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
-    <logger name="cn.chengchaos" level="DEBUG"/>
+    <logger name="cn.chengchaos" level="DEBUG" addtivity="false"/>
 
     <!-- <root level="${logLevel}"> -->
     <root level="INFO">
