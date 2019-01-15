@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class FutureTest002 {
 
@@ -111,6 +112,74 @@ public class FutureTest002 {
 
         this.waitAMoment(4L);
         System.err.println("-- end --");
+
+
+    }
+
+
+    private Integer parseAInteger(String input) {
+
+        this.waitAMoment(1L);
+
+        return Integer.parseInt(input, 10);
+    }
+
+
+    @Test
+    public void exceptionTest001() {
+
+        CompletableFuture<Integer> future = CompletableFuture
+                .supplyAsync(()-> "hello world")
+                .thenApply(this::parseAInteger);
+
+        try {
+            Integer result = null;
+                result = future.get(2L, TimeUnit.SECONDS);
+            System.out.println(result);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+
+        this.waitAMoment(2L);
+    }
+
+
+    @Test
+    public void composeTest002() {
+
+        CompletableFuture<Integer> future = CompletableFuture
+                .supplyAsync(() -> {
+                    System.out.println(1);
+                    this.waitAMoment(1);
+                    System.out.println(1.1);
+                    return 1;
+                })
+                .thenCompose(input -> CompletableFuture.supplyAsync(() -> {
+                    System.out.println(2);
+                    this.waitAMoment(1);
+                    System.out.println(2.1);
+                    return input + 1;
+                }))
+                .thenCompose(input -> CompletableFuture.supplyAsync(() -> {
+                    System.out.println(3);
+                    this.waitAMoment(1);
+                    System.out.println(3.1);
+                    return input + 1;
+                }))
+                .thenCompose(input -> CompletableFuture.supplyAsync(() -> {
+                    System.out.println(4);
+                    this.waitAMoment(1);
+                    System.out.println(4.1);
+                    return input + 1;
+                }));
+
+        Integer join = future.join();
+
+        System.err.println("join = "+ join);
 
 
     }
