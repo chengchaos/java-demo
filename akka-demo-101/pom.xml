@@ -18,7 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <project.scala.version>2.11.8</project.scala.version>
+        <project.scala.version>2.11.12</project.scala.version>
         <spring-cloud.version>Edgware.SR1</spring-cloud.version>
         <docker.image.prefix>sinogold</docker.image.prefix>
     </properties>
@@ -71,6 +71,12 @@
             <artifactId>scala-java8-compat_2.11</artifactId>
             <version>0.9.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-async_2.11</artifactId>
+            <version>0.9.7</version>
+        </dependency>
         <!-- scala-end -->
 
         <!-- Akka -->
@@ -119,6 +125,21 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.5</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.11</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>27.0.1-jre</version>
+        </dependency>
+
+
 
         <!-- logback-classic -->
         <dependency>
