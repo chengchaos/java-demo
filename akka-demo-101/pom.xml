@@ -18,6 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <!--<project.scala.version>[2.11.12,)</project.scala.version>-->
         <project.scala.version>2.11.12</project.scala.version>
         <spring-cloud.version>Edgware.SR1</spring-cloud.version>
         <docker.image.prefix>sinogold</docker.image.prefix>
@@ -41,7 +42,7 @@
 
     <dependencies>
 
-		<!-- scala-begin -->
+        <!-- scala-begin -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
@@ -119,7 +120,7 @@
             <version>1.2.45</version>
         </dependency>
 
-		<!-- commons-lang -->
+        <!-- commons-lang -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -166,6 +167,28 @@
                     <groupId>net.alchim31.maven</groupId>
                     <artifactId>scala-maven-plugin</artifactId>
                     <version>3.2.2</version>
+                    <executions>
+                        <execution>
+                            <id>compile-scala</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>add-source</goal>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>test-compile-scala</id>
+                            <phase>test-compile</phase>
+                            <goals>
+                                <goal>add-source</goal>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <scalaVersion>${project.scala.version}</scalaVersion>
+                    </configuration>
+
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -177,7 +200,7 @@
 
         <plugins>
 
-        	<!-- scala 编译插件 -->
+            <!-- scala 编译插件 -->
             <!-- https://github.com/davidB/scala-maven-plugin -->
             <plugin>
                 <groupId>net.alchim31.maven</groupId>
@@ -206,7 +229,7 @@
                 </configuration>
             </plugin>
 
-			<!-- 打包跳过测试 -->
+            <!-- 打包跳过测试 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
