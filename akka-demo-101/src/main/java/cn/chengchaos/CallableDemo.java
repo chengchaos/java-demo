@@ -43,12 +43,11 @@ public class CallableDemo {
             String result = submit.get(3000L, TimeUnit.MILLISECONDS);
             LOGGER.info("is done 2 ? ==> {}", submit.isDone());
             LOGGER.info("result ==> {}", result);
+        } catch (TimeoutException | ExecutionException e) {
+            LOGGER.error("", e);
         } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
+            LOGGER.error("", e);
         }
     }
 }
