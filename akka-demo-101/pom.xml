@@ -140,7 +140,11 @@
             <version>27.0.1-jre</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
+        </dependency>
 
         <!-- logback-classic -->
         <dependency>

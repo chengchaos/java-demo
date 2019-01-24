@@ -27,7 +27,7 @@ class BossActor extends Actor {
       // 利用 ActorContext.actorOf
       val managerActors = (1 to 3).map { i =>
         // 这里我们召唤3个主管
-        context.actorOf(Props[ManagerActor], s"manager$i")
+        context.actorOf(Props[ManagerActor].withDispatcher(Demo1Runner.chaosDispatcher), s"manager$i")
       }
 
       managerActors foreach (manager => {
