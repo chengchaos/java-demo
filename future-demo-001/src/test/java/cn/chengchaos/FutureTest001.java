@@ -3,6 +3,8 @@ package cn.chengchaos;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Collections;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.*;
 
@@ -234,6 +236,39 @@ public class FutureTest001 {
         }
     }
 
+    @Test
+    public void testThenCompose() throws InterruptedException, ExecutionException, TimeoutException {
+
+        System.out.println(">> 开始");
+
+        CompletableFuture<Map<String, Integer>> future1 = CompletableFuture.supplyAsync(() -> {
+
+            int ranint = new Random().nextInt(10);
+            System.out.println("ranint == "+ ranint);
+
+            try {
+                TimeUnit.SECONDS.sleep(ranint);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return Collections.singletonMap("result",  ranint);
+        });
+
+        CompletableFuture<String> future2 = future1.thenCompose(map -> CompletableFuture.supplyAsync(() -> {
+            if (map.get("result") % 2 == 1) {
+                return "OK.";
+            } else {
+                return "Kao";
+            }
+        }) );
+
+        String result = future2.get(30L, TimeUnit.SECONDS);
+
+        System.out.println("result ==> "+ result);
+
+
+    }
+
     /**
      * 使用 thenCombine() 之后
      * f1 和 f2 之间是并行的.
@@ -263,6 +298,7 @@ public class FutureTest001 {
 
     @Test
     public void combineTest() {
+
         CompletableFuture<String> f1 = CompletableFuture.supplyAsync(() -> {
             try {
                 TimeUnit.SECONDS.sleep(4L);
