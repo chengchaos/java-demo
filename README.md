@@ -7,7 +7,6 @@ setup
 
 
 ```bash
-
 $ spring init my-timer
 ```
 
@@ -63,4 +62,28 @@ $ spring init my-timer
 console-available=true
 spring.output.ansi.enabled=ALWAYS
 ```
+
+## akka-demo-101
+
+使用这个项目测试了：
+
+- Scala 编写简单的 Actor 系统。
+
+## my-scala003
+
+使用这个项目测试了：
+ 
+- Scala 和 Java 混合编译
+- Java 访问 Kafka （写入）
+
+
+## my-scala004
+
+使用这个项目测试了：
+ 
+- Scala 和 Java 混合编译
+- Java 访问 Kafka （读取）
+- Java 访问 HBase
+- Java 编写简单的 Actor 系统。
+
 
