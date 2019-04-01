@@ -1,0 +1,46 @@
+
+server:
+  port: 8081
+spring:
+  application:
+    name: my-jsp
+  cloud:
+    service-registry:
+      auto-registration:
+        enabled: true
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+ribbon:
+  eager-load:
+    enabled: true
+    clients:
+      - MY-SCALA002
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    enabled-by-default: false
+  endpoint:
+    beans:
+      enabled: true
+    configprops:
+      enabled: true
+    env:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    mappings:
+      enabled: true
+

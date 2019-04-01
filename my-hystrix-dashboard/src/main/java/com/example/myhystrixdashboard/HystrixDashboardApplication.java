@@ -16,6 +16,11 @@ public class HystrixDashboardApplication {
     private static final Logger LOGGER = LoggerFactory.getLogger(HystrixDashboardApplication.class);
 
 
+    /**
+     * https://www.chengchao.vip/ctrl/actuator/hystrix.stream
+     *
+     * @param args
+     */
 	public static void main(String[] args) {
 
         ConfigurableApplicationContext context =

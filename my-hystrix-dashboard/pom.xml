@@ -27,7 +27,7 @@
     <repositories>
         <repository>
             <id>fma-group</id>
-            <url>https://www.chengchaos.cn/nexus/repository/fma-group/</url>
+            <url>https://pts-tsp.futuremove.cn/nexus/repository/fma-group/</url>
         </repository>
     </repositories>
 
@@ -36,7 +36,7 @@
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Finchley.SR1</version>
+				<version>Finchley.SR2</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
