@@ -6,6 +6,7 @@
 ~$*
 *.tmp
 logPath_IS_UNDEFINED
+LOG_FILE_IS_UNDEFINED
 logs
 
 */.classpath

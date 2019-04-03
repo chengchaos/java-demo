@@ -1,8 +1,10 @@
 package cn.chengchao.future;
 
 import akka.parboiled2.RuleTrace;
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
@@ -22,6 +24,130 @@ import java.util.concurrent.TimeUnit;
  * @since [产品模块版本]
  */
 public class Future001 {
+
+    private Double doSomeLongComputation() {
+
+        try {
+            TimeUnit.SECONDS.sleep(2L);
+            return 42D;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return 0D;
+    }
+
+    private void doSomethingElse() {
+        System.out.println("hai ...");
+    }
+
+
+    private void waitSometime(long t) {
+        try {
+            TimeUnit.SECONDS.sleep(t);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    @Test
+    public void testFuture5() {
+
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        Future<Double> future = executor.submit(
+                new Callable<Double>() {
+                    @Override
+                    public Double call() throws Exception {
+                        return doSomeLongComputation();
+                    }
+                }
+        );
+
+        boolean done = future.isDone();
+
+        doSomethingElse();
+        System.out.println("is done ==> "+ done);
+
+        try {
+            Double result = future.get(3L, TimeUnit.SECONDS);
+            Double expected = 42D;
+            Assert.assertEquals("不相等", expected, result);
+            System.out.println("result ==> "+ result);
+            done = future.isDone();
+            boolean cancelled = future.isCancelled();
+
+            System.out.println("is done ==> "+ done +", is cancelled ==> "+ cancelled);
+
+            TimeUnit.SECONDS.sleep(5L);
+        } catch (ExecutionException ee) {
+            /* 计算抛出一个异常 */
+        } catch (InterruptedException ie) {
+            /* 被中断异常 */
+        } catch (TimeoutException te) {
+            /* Future 完成前超时 */
+        }
+    }
+
+    @Test(expected=ExecutionException.class)
+    public void testGetAndJoin() throws Exception {
+        CompletableFuture<Integer> future= CompletableFuture.supplyAsync(
+                () -> {
+                    /* join 时，在这里抛出异常 */
+                    int i = 1/0;
+                    return 100;
+                });
+        /* get 时， 在这里抛出异常 */
+        future.get();
+        Integer joinResult = future.join();
+        System.out.println("result = "+ joinResult);
+
+    }
+
+    @Test
+    public void testAccept() throws Exception {
+
+        CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> {
+            return 100;
+        });
+        CompletableFuture<Void> f =  future2.thenAcceptAsync(i -> {
+            this.waitSometime(1L);
+            System.out.println(i); // (2) 100
+        });
+        System.out.println("f is done ==> "+ f.isDone()); // (1) f is done ==> false
+        System.out.println(f.get()); // (3) null
+        System.out.println("f is done ==> "+ f.isDone()); // (4) f is done ==> true
+        this.waitSometime(2L);
+    }
+
+    /**
+     * 抛出异常是返回 -1， 否则返回 100
+     */
+    @Test
+    public void testEx() {
+
+        final int x = new Random().nextInt(2);
+        CompletableFuture<Integer> future= CompletableFuture.supplyAsync(
+                () -> {
+                    System.out.println("stmt = 1 / "+ x);
+                    int i = 1/x;
+                    return 100;
+                })
+                .exceptionally((t) ->  -1);
+
+        try {
+            Integer result = future.get();
+            System.out.println("result ==> "+ result);
+            waitSometime(2L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("-- end --");
+
+    }
+
 
     @Test
     public void test01() {
@@ -88,6 +214,7 @@ public class Future001 {
      * 将前一个结果作为下一个计算的参数.
      * <p>
      * 它们之间存在着先后顺序.
+     * </p>
      */
     @Test
     public void test003() {
@@ -102,8 +229,8 @@ public class Future001 {
                         .thenCompose(d -> CompletableFuture.supplyAsync(() -> d * 10));
 
         try {
-            System.out.println(future.get());
-            System.out.println(f2.get());
+            System.out.println(future.get()); // hello world
+            System.out.println(f2.get()); // 100.0
         } catch (InterruptedException e) {
             e.printStackTrace();
             Thread.currentThread().interrupt();
@@ -224,8 +351,10 @@ public class Future001 {
      */
     @Test
     public void acceptBothTest() {
+
         CompletableFuture<String> f1 =
                 CompletableFuture.supplyAsync(() -> "100");
+
         CompletableFuture<Integer> f2 =
                 CompletableFuture.supplyAsync(() -> 10);
 
