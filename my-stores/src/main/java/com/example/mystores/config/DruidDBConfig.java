@@ -140,7 +140,7 @@ public class DruidDBConfig {
         try {
             dataSource.setFilters(filters);
         } catch (SQLException e) {
-            LOGGER.error("druid configuration initialization filter : {0}", e);
+            LOGGER.error("druid configuration initialization filter : {}", e);
         }
         dataSource.setConnectionProperties(connectionProperties);
 

@@ -77,7 +77,7 @@ spring.output.ansi.enabled=ALWAYS
 - Java 访问 Kafka （写入）
 
 
-## my-scala004
+## my-hbase-001
 
 使用这个项目测试了：
  

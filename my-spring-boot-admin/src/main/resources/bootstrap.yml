@@ -1,0 +1,10 @@
+logging:
+  #path: @logging.path@
+  path: target/logs/
+  file: my-scala001.log
+  config: classpath:logback-spring.xml
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.springframework.test: ERROR
+    org.springframework.boot.autoconfigure: ERROR
