@@ -6,7 +6,10 @@ import org.junit.Test;
 
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -234,6 +237,50 @@ public class Future001 {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test()
+    public void thenComposeTest() {
+
+        CompletableFuture<String> future =
+                CompletableFuture.supplyAsync(() -> "hello")
+                        .thenCompose(s -> CompletableFuture.supplyAsync(() -> s + " world"));
+
+        int i = 50;
+        try {
+        CompletableFuture<Void> f2 =
+                CompletableFuture.supplyAsync(() -> "10")
+                        .thenCompose(s -> CompletableFuture.supplyAsync(() -> {
+                            if (i > 100) {
+                                throw new RuntimeException("10 错误");
+                            }
+                            return Double.parseDouble(s);
+                        }))
+                        .thenCompose(d -> CompletableFuture.supplyAsync(() -> {
+                            if (i > 10) {
+                                throw new RuntimeException("double 错误");
+                            }
+                            return d * 10;
+                        }))
+                        .exceptionally(ex -> {
+                            System.err.println("kao222");
+//                            ex.printStackTrace();
+                            return null;
+                        }).thenAccept(d -> {
+                    System.out.println(">> " + d);
+                });
+
+
+            System.out.println(future.get());
+//            System.out.println(f2.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException | CompletionException e) {
+            System.err.println("kao");
+            e.printStackTrace();
+        }
+
     }
 
     /**
