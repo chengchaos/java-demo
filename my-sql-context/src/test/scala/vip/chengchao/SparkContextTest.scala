@@ -1,16 +1,16 @@
 package vip.chengchao
 
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.{SQLContext, SparkSession}
 import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.{SparkConf, SparkContext}
 import org.slf4j.{Logger, LoggerFactory}
 
 
-class SparkContextTest {
+class SparkContextTest extends Serializable {
 
-  val logger:Logger = LoggerFactory.getLogger(classOf[SparkContextTest])
+  val logger: Logger = LoggerFactory.getLogger(classOf[SparkContextTest])
 
-  def withSparkContext(callback: SparkContext => Unit) :Unit = {
+  def withSparkContext(callback: SparkContext => Unit): Unit = {
 
     val conf = new SparkConf()
       .setAppName("SparkContextTest")
@@ -20,6 +20,7 @@ class SparkContextTest {
     // 严格要求注册类
     //conf.set("spark.kryo.registrationRequired", "true")
     //conf.registerKryoClasses(Array(classOf[MyClass], classOf[MyOtherClass]))
+    conf.registerKryoClasses(Array(classOf[SparkV1Test]))
 
     // 在 VM.Options 中增加 ： -ea -Dspark.master=local[*]
     // conf.setMaster("local[2]")
@@ -32,7 +33,7 @@ class SparkContextTest {
 
   }
 
-  def withSqlContext(callback : SQLContext => Unit): Unit = {
+  def withSqlContext(callback: SQLContext => Unit): Unit = {
 
     val sparkConf = new SparkConf()
       .setMaster("local[*]")
@@ -49,7 +50,7 @@ class SparkContextTest {
   }
 
 
-  def withHiveContext(callback: HiveContext => Unit) :Unit = {
+  def withHiveContext(callback: HiveContext => Unit): Unit = {
 
     val sparkConf = new SparkConf()
     sparkConf.setAppName("SparkContextTest")
@@ -64,5 +65,20 @@ class SparkContextTest {
 
     sparkContext.stop()
 
+  }
+
+  def withSparkSession(callback:SparkSession => Unit): Unit = {
+
+    val spark:SparkSession = SparkSession.builder()
+
+      .master("local")
+      .appName("SparkContextTest")
+      //.config("spark.some.config.option", "some-value")
+      .getOrCreate()
+
+
+    callback(spark)
+
+    spark.close()
   }
 }

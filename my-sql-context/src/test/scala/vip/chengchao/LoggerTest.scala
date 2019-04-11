@@ -20,4 +20,21 @@ class LoggerTest {
     println("== end ==")
   }
 
+  @Test
+  def printAcsii(): Unit = {
+
+    val longVal = 32L
+    val intVal = longVal.asInstanceOf[Int]
+
+    val charVal = intVal.asInstanceOf[Char]
+
+
+    val c:Char = 65
+
+    println("c == "+ c)
+
+    for (i <- 0 to 93) {
+      logger.info("i: {} = {}",i, (i + 33).asInstanceOf[Char])
+    }
+  }
 }

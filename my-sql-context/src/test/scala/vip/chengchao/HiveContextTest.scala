@@ -34,7 +34,7 @@ class HiveContextTest extends SparkContextTest {
       topTweets.printSchema()
 
       topTweets.show()
-      
+
 
     })
   }

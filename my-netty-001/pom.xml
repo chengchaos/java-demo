@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>com.example</groupId>
-    <artifactId>my-netty-002</artifactId>
+    <artifactId>my-netty-001</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>my-netty-002</name>
+    <name>my-netty-001</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

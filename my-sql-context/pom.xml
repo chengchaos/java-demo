@@ -18,7 +18,6 @@
     </properties>
 
     <repositories>
-
         <repository>
             <id>fma-group</id>
             <url>http://pts-tsp.futuremove.cn/nexus/repository/fma-group/</url>
@@ -62,7 +61,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.spark/spark-hive -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-hive_2.11</artifactId>
