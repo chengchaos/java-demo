@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -41,6 +42,8 @@ public class FirstClientHandler extends ChannelInboundHandlerAdapter {
             byteBuf = getByteBuf(ctx, i +" ==> "+ input);
             // 2: 写数据
             ctx.channel().writeAndFlush(byteBuf);
+
+            TimeUnit.SECONDS.sleep(1L);
         }
 
 

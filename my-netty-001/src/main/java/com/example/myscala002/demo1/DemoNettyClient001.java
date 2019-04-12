@@ -55,7 +55,7 @@ public class DemoNettyClient001 {
     }
 
 
-    public void start() {
+    public void start(int inetPort) {
 
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -78,7 +78,7 @@ public class DemoNettyClient001 {
             }
         });
 
-        ChannelFuture future = bootstrap.connect("localhost", 9002);
+        ChannelFuture future = bootstrap.connect("localhost", inetPort);
 
         // 4：建立连接
         future.addListener(new GenericFutureListener<Future<? super Void>>() {
@@ -96,6 +96,6 @@ public class DemoNettyClient001 {
 
 
     public static void main(String[] args) {
-        new DemoNettyClient001().start();
+        new DemoNettyClient001().start(9092);
     }
 }

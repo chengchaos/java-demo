@@ -33,7 +33,7 @@ public class HelloWorldServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 
-        cause.printStackTrace();
+        LOGGER.error("", cause);
         ctx.close();
     }
 }
