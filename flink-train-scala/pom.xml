@@ -42,7 +42,7 @@ under the License.
 				<updatePolicy>never</updatePolicy>
 			</releases>
 		</repository>
-		
+
 		<repository>
 			<id>apache.snapshots</id>
 			<name>Apache Development Snapshot Repository</name>
