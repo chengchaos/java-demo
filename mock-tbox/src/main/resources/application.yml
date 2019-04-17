@@ -8,23 +8,28 @@ spring:
     service-registry:
       auto-registration:
         enabled: false
+  webflux:
+    static-path-pattern: /statuc/**
+  main:
+    allow-bean-definition-overriding: true
+
 #  mvc:
 #    view:
 #      prefix: /WEB-INF/views/
 #      suffix: .htm
-  freemarker:
-    # req访问 request
-    request-context-attribute: req
-    suffix: .htm
-    content-type: text/html
-    enabled: true
-    cache: false
-    # 模板加载路径 按需配置
-    template-loader-path:
-      - classpath:/templates
-    charset: UTF-8
-    settings:
-      number_format: '0.##'
+#  freemarker:
+#    # req访问 request
+#    request-context-attribute: req
+#    suffix: .htm
+#    content-type: text/html
+#    enabled: true
+#    cache: false
+#    # 模板加载路径 按需配置
+#    template-loader-path:
+#      - classpath:/templates
+#    charset: UTF-8
+#    settings:
+#      number_format: '0.##'
 
 
 management:

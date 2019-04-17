@@ -19,7 +19,7 @@ import org.springframework.web.context.request.async.WebAsyncTask;
  * @see 【相关类方法】
  * @since 1.1.0
  */
-@RestController
+//@RestController
 public class SayHaiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SayHaiController.class);
