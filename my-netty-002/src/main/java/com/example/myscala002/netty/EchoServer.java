@@ -14,6 +14,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.ServerSocketChannel;
 import io.netty.channel.socket.nio.NioChannelOption;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.unix.UnixChannelOption;
 import io.netty.util.internal.PlatformDependent;
 import io.netty.util.internal.SystemPropertyUtil;
 import org.apache.logging.log4j.spi.LoggerRegistry;
@@ -117,13 +118,13 @@ public class EchoServer {
             if (Epoll.isAvailable()) {
                 bootstrap.channel(EpollServerSocketChannel.class)
                         //.option(ChannelOption.SO_BROADCAST, true)
-                        .option(EpollChannelOption.SO_REUSEPORT, true);
+                        .option(UnixChannelOption.SO_REUSEPORT, true);
 
             } else if (KQueue.isAvailable()) {
                 bootstrap.channel(KQueueServerSocketChannel.class);
             } else {
                 bootstrap.channel(NioServerSocketChannel.class)
-                        .option(NioChannelOption.SO_REUSEADDR, true);
+                        .option(ChannelOption.SO_REUSEADDR, true);
             }
 
             bootstrap.option(ChannelOption.SO_RCVBUF, 1024 * 1024 * bufferSize);
