@@ -2,6 +2,7 @@ package com.example.myscala002.hbase;
 
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.Table;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +32,9 @@ public class HBaseConnTest {
 
         LOGGER.info("conn ==> {}", conn.isClosed());
 
-        HBaseConn.closeConn();
+        Assert.assertFalse("连接是关闭的", conn.isClosed());
+
+        HBaseConn.closeConn(conn);
     }
 
     @Test
@@ -40,7 +43,9 @@ public class HBaseConnTest {
         String tableName = "US_POPULATION";
         try {
             Table table = HBaseConn.getTable(tableName);
-            LOGGER.info("tableName ==> {}, ==> {}", tableName, table.getName().getNameAsString());
+            LOGGER.info("tableName ==> {}, ==> {}",
+                    tableName,
+                    table.getName().getNameAsString());
 
 
             table.close();
