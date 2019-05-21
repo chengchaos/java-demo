@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: rabbitmq-demo
+  rabbitmq:
+    host: 192.168.88.174
+    port: 5672
+    username: guest
+    password: guest
+server:
+  port: 8771
+  context-path: /rabbitmq-demo
+logging:
+  path: targtet/logs/
+  file: logs/rabbitmq-demo.log
+  level:
+    com.sinogold: info

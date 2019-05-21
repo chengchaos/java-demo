@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: netty-on-freebsd
+  profiles:
+    active: @project.env@
+server:
+  port: 8384
+  servlet:
+    context-path: /netty-on-freebsd
+logging:
+  path: targtet/logs/
+  file: logs/tbox-gateway.out
+  level:
+    com.sinogold: info

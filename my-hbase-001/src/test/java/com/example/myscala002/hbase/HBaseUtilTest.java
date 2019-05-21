@@ -27,10 +27,16 @@ public class HBaseUtilTest {
     @Test
     public void createTableTest() {
 
-        HBaseUtil.createTable("FileTable",
-                new String[]{
-                        "fileInfo", "saveInfo"
-                });
+        /*
+         * tableName == 表名称
+         * cfs == 列族的数组
+         */
+        String tableName = "FileTable";
+        String[] cfs = new String[]{
+                "fileInfo", "saveInfo"
+        };
+
+        HBaseUtil.createTable(tableName, cfs);
 
         LOGGER.info(">> end >>");
 
@@ -40,22 +46,22 @@ public class HBaseUtilTest {
     public void addFileDetails() {
 
         HBaseUtil.putRow("FileTable", "rowkey1",
-                "fileInfo", "name","file1.txt");
+                "fileInfo", "name", "file1.txt");
         HBaseUtil.putRow("FileTable", "rowkey1",
-                "fileInfo", "type","txt");
+                "fileInfo", "type", "txt");
         HBaseUtil.putRow("FileTable", "rowkey1",
-                "fileInfo", "size","1024");
+                "fileInfo", "size", "1024");
         HBaseUtil.putRow("FileTable", "rowkey1",
-                "saveInfo", "creator","20190401");
+                "saveInfo", "creator", "20190401");
 
         HBaseUtil.putRow("FileTable", "rowkey2",
-                "fileInfo", "name","file1.txt");
+                "fileInfo", "name", "file1.txt");
         HBaseUtil.putRow("FileTable", "rowkey2",
-                "fileInfo", "type","txt");
+                "fileInfo", "type", "txt");
         HBaseUtil.putRow("FileTable", "rowkey2",
-                "fileInfo", "size","1024");
+                "fileInfo", "size", "1024");
         HBaseUtil.putRow("FileTable", "rowkey2",
-                "saveInfo", "creator","20190401");
+                "saveInfo", "creator", "20190401");
 
     }
 
@@ -66,12 +72,17 @@ public class HBaseUtilTest {
 
         ResultScanner scanner = HBaseUtil.getScanner("mytable", "row1", "row100", new FilterList(filter));
 
-        for (Result result :scanner) {
-            String str = Bytes.toString(result.getValue(Bytes.toBytes("mycf"), Bytes.toBytes("name")));
-            LOGGER.info("str ==> {}", str);
-        }
+        if (scanner != null) {
 
-        scanner.close();
+            for (Result result : scanner) {
+                String str = Bytes.toString(result.getValue(Bytes.toBytes("mycf"), Bytes.toBytes("name")));
+                LOGGER.info("str ==> {}", str);
+            }
+
+            scanner.close();
+        } else {
+            LOGGER.error("scanner is null. why ?");
+        }
         LOGGER.info("== end ==");
 
     }

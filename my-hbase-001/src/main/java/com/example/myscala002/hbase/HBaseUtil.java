@@ -57,17 +57,24 @@ public class HBaseUtil {
 
             admin.createTable(tableDescriptor);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.error("", e);
         }
 
         return false;
     }
 
+    /**
+     * 删除表
+     * @param tableName
+     * @return
+     */
     public static boolean deleteTable(String tableName) {
 
         try (HBaseAdmin admin = (HBaseAdmin) HBaseConn.getHBaseConn().getAdmin()) {
+            // 先 disable
             admin.disableTable(tableName);
+            // 后 drop
             admin.deleteTable(tableName);
             return true;
         } catch (IOException e) {

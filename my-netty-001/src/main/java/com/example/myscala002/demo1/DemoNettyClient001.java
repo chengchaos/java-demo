@@ -1,5 +1,6 @@
 package com.example.myscala002.demo1;
 
+import com.example.netty.demo2.ClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -73,8 +74,10 @@ public class DemoNettyClient001 {
             protected void initChannel(SocketChannel ch) throws Exception {
 
                 ch.pipeline()
-                        .addLast(new LineBasedFrameDecoder(10000))
-                        .addLast(new FirstClientHandler());
+//                        .addLast(new LineBasedFrameDecoder(10000))
+//                        .addLast(new FirstClientHandler())
+                    .addLast(new ClientHandler())
+                ;
             }
         });
 

@@ -1,0 +1,53 @@
+
+server:
+  port: 8081
+spring:
+  application:
+    name: mock-tbox
+  cloud:
+    service-registry:
+      auto-registration:
+        enabled: false
+  webflux:
+    static-path-pattern: /statuc/**
+  main:
+    allow-bean-definition-overriding: true
+
+#  mvc:
+#    view:
+#      prefix: /WEB-INF/views/
+#      suffix: .htm
+#  freemarker:
+#    # req访问 request
+#    request-context-attribute: req
+#    suffix: .htm
+#    content-type: text/html
+#    enabled: true
+#    cache: false
+#    # 模板加载路径 按需配置
+#    template-loader-path:
+#      - classpath:/templates
+#    charset: UTF-8
+#    settings:
+#      number_format: '0.##'
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    enabled-by-default: false
+  endpoint:
+    beans:
+      enabled: true
+    configprops:
+      enabled: true
+    env:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    mappings:
+      enabled: true
+

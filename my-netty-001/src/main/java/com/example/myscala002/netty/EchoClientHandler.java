@@ -6,6 +6,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * <p>
  * <strong>
@@ -46,7 +48,11 @@ public class EchoClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         // 当被通知 Channel 是活跃的时候， 发送一条消息
-        ctx.writeAndFlush(Unpooled.copiedBuffer("netty rocks!", CharsetUtil.UTF_8));
+        for (int i = 0; i < 2; i++) {
+
+            ctx.writeAndFlush(Unpooled.copiedBuffer("netty rocks!", CharsetUtil.UTF_8));
+            TimeUnit.SECONDS.sleep(1L);
+        }
     }
 
     @Override

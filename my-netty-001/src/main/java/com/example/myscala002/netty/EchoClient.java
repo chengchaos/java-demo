@@ -9,6 +9,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -33,13 +34,19 @@ public class EchoClient {
         this.port = port;
     }
 
+    private EventLoopGroup eventLoopGroup;
+
+    public EventLoopGroup getEventLoopGroup() {
+        return eventLoopGroup;
+    }
+
     public void start() throws Exception {
 
-        EventLoopGroup group = new NioEventLoopGroup();
+        eventLoopGroup = new NioEventLoopGroup();
 
         try {
             Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(group)
+            bootstrap.group(eventLoopGroup)
                     .channel(NioSocketChannel.class)
                     .remoteAddress(new InetSocketAddress(host, port))
                     .handler(new ChannelInitializer<Channel>() {
@@ -49,14 +56,31 @@ public class EchoClient {
                                     .addLast(new EchoClientHandler());
                         }
                     });
-            ChannelFuture future = bootstrap.connect().sync();
-            future.channel().closeFuture().sync();
+            ChannelFuture connect = bootstrap.connect();
+            System.out.println("connect ==> "+ connect);
+            //ChannelFuture future = bootstrap.connect().sync();
+            //future.channel().closeFuture().sync();
+
         } finally {
-            group.shutdownGracefully().sync();
+            //eventLoopGroup.shutdownGracefully().sync();
         }
     }
 
     public static void main(String[] args) throws Exception {
-        new EchoClient("localhost", 7777).start();
+
+
+        EchoClient client = new EchoClient("localhost", 8384);
+
+        for (int i = 0; i < 3; i++) {
+
+            client.start();
+
+            TimeUnit.SECONDS.sleep(5L);
+            System.err.println("-- end -- line 1:"+ i);
+
+            client.getEventLoopGroup().shutdownGracefully();
+
+            System.err.println("-- end -- line 2: "+ i);
+        }
     }
 }
