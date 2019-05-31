@@ -19,6 +19,8 @@ logs
 */.idea/
 */*.iml
 */target
+*/*/target
+**/target
 */*.log
 */logs
 */\$\{sys:LOG_FILE\}

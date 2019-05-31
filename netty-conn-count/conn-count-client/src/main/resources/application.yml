@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: tbox-gateway
+  profiles:
+    active: @project.env@
+server:
+  port: 8224
+  servlet:
+    context-path: /tbox-gateway
+logging:
+  path: targtet/logs/
+  file: logs/tbox-gateway.out
+  level:
+    com.sinogold: info
