@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: kafka-consumer
+  profiles:
+    active: @project.env@
+server:
+  port: 8223
+  servlet:
+    context-path: /kafka-consumer
+logging:
+  path: targtet/logs/
+  file: logs/tbox-gateway.out
+  level:
+    com.sinogold: info
