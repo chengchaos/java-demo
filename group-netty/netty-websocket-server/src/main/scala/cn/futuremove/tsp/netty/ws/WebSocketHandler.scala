@@ -94,8 +94,9 @@ class WebSocketHandler extends SimpleChannelInboundHandler[Object] {
         if (handshaker != null) {
           handshaker.close(channel, close.retain())
         }
+
       case ping: PingWebSocketFrame =>
-        ctx.writeAndFlush(new PongWebSocketFrame(frame.content().retain()))
+        ctx.writeAndFlush(new PongWebSocketFrame(ping.content().retain()))
 
       case text: TextWebSocketFrame =>
         val content = text.text()
@@ -109,8 +110,8 @@ class WebSocketHandler extends SimpleChannelInboundHandler[Object] {
 
         WebSocketConfig.CHANNEL_GROUP.writeAndFlush(data)
 
-      case _ => logger.error("不支持二进制消息")
-        throw new RuntimeException("不支持二进制消息")
+      case _ =>
+        throw new UnsupportedOperationException("不支持二进制消息")
     }
   }
 

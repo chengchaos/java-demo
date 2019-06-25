@@ -5,6 +5,7 @@ import io.netty.channel.{ChannelFutureListener, ChannelInitializer, EventLoopGro
 import io.netty.channel.nio.NioEventLoopGroup
 import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioServerSocketChannel
+import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketServerCompressionHandler
 import io.netty.handler.codec.http.{HttpObjectAggregator, HttpServerCodec}
 import io.netty.handler.stream.ChunkedWriteHandler
 
@@ -44,7 +45,10 @@ object WebSocketServer {
               .addLast("http-codec", new HttpServerCodec)
               .addLast("aggregator", new HttpObjectAggregator(65536))
               .addLast("http-chunked", new ChunkedWriteHandler)
+//              .addLast("compress", new WebSocketServerCompressionHandler())
               .addLast("websocket", new WebSocketHandler)
+
+
           })
           .bind(inetPort)
           .sync()
