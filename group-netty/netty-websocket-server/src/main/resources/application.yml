@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: tsp-tbox-mocker
+  profiles:
+    active: @project.env@
+server:
+  port: 8225
+  servlet:
+    context-path: /tsp-tbox-mocker
+logging:
+  path: @logging.path@
+  file: tsp-tbox-mocker.log
+  level:
+    com.sinogold: info
+
