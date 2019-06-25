@@ -4,15 +4,21 @@ import com.example.springakkademo.actor.ActorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.async.WebAsyncTask;
 import scala.Option;
 
 @RestController
 public class HelloWorldController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HelloWorldController.class);
+
+
+    private AsyncTaskExecutor asyncTaskExecutor = new ThreadPoolTaskExecutor();
 
 
     @Autowired
@@ -56,5 +62,11 @@ public class HelloWorldController {
 
 
         return result.get();
+    }
+
+
+    public WebAsyncTask<String> calc4() {
+
+        return new WebAsyncTask<>(5000L, this.asyncTaskExecutor, () -> "Hai");
     }
 }

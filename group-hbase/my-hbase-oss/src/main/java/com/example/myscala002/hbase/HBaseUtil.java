@@ -176,7 +176,7 @@ public class HBaseUtil {
 
     /**
      *
-     * @param tableName 表明
+     * @param tableName 表名
      * @param startRowKey 起始 RowKey
      * @param endRowKey 终止 RowKey
      */
