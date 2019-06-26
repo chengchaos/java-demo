@@ -43,7 +43,7 @@ class HBaseHelperTest {
     val qualifier = "username"
     val v = "火🔥龙果"
 
-    val x = HBaseHelper.putRow(tabName, rowkey, cf, qualifier, v)
+    val x = HBaseHelper.put1Cell(tabName, rowkey, cf, qualifier, v)
 
     println("x = "+ x)
   }
@@ -51,7 +51,7 @@ class HBaseHelperTest {
   @Test
   def retrieve1RowTest() : Unit = {
 
-    val resultOpt = HBaseHelper.getRow("mytest", "mytest0002")
+    val resultOpt = HBaseHelper.resultOption("mytest", "mytest0002")
     println("result  = "+ resultOpt)
 
     if (resultOpt.isDefined) {
@@ -68,7 +68,7 @@ class HBaseHelperTest {
   @Test
   def scannerTest() : Unit = {
 
-    val scannerOption = HBaseHelper.getScanner("mytest")
+    val scannerOption = HBaseHelper.resultScannerOption("mytest")
     if (scannerOption.nonEmpty) {
 
       val resultScanner: ResultScanner= scannerOption.get

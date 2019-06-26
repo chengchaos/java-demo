@@ -1,10 +1,11 @@
 package cn.chengchaos.hbase
 
+import com.typesafe.config.{Config, ConfigFactory}
 import grizzled.slf4j.Logger
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.hbase.{HBaseConfiguration, HColumnDescriptor, HTableDescriptor, TableName}
 import org.apache.hadoop.hbase.client.{Connection, ConnectionFactory, Delete, Get, HBaseAdmin, Put, Result, ResultScanner, Scan, Table}
-import org.apache.hadoop.hbase.filter.FilterList
+import org.apache.hadoop.hbase.filter.{Filter, FilterList}
 import org.apache.hadoop.hbase.util.Bytes
 
 /**
@@ -23,6 +24,11 @@ object HBaseHelper {
 
   val logger: Logger = Logger[HBaseHelper.type]
 
+  val config : Config = ConfigFactory.load()
+
+  val zookeeperQuorum: String = config.getString("hbase.zookeeper.quorum")
+  val rootdir: String = config.getString("hbase.rootdir")
+
   private lazy val configuration: Configuration = createHadoopConfiguration()
 
   @volatile
@@ -36,8 +42,10 @@ object HBaseHelper {
   def createHadoopConfiguration(): Configuration = {
     this.nsar(HBaseConfiguration.create()) {
       conf => {
-        conf.set("hbase.zookeeper.quorum", "t420i:2181")
-        conf.set("hbase.rootdir", "hdfs://t420i:8080/hbase")
+        logger.info(s"quorum ==> $zookeeperQuorum, rootdir ==> $rootdir")
+
+        conf.set("hbase.zookeeper.quorum", zookeeperQuorum)
+        conf.set("hbase.rootdir", rootdir)
       }
     }
   }
@@ -146,7 +154,7 @@ object HBaseHelper {
 
   }
 
-  def deleteTAble(tabName: String): Boolean = {
+  def deleteTable(tabName: String): Boolean = {
     this.withHBaseAdmin(admin => {
       admin.disableTable(tabName)
       admin.deleteTable(tabName)
@@ -172,7 +180,7 @@ object HBaseHelper {
     * @param data      字段值
     * @return
     */
-  def putRow(tabName: String, rowKey: String, cfName: String, qualifier: String, data: String): Option[Boolean] = {
+  def put1Cell(tabName: String, rowKey: String, cfName: String, qualifier: String, data: String): Option[Boolean] = {
 
     this.withTable(tabName) {
       table => {
@@ -188,7 +196,14 @@ object HBaseHelper {
 
   }
 
-  def pubRows(tabName: String, puts: Seq[Put]): Unit = {
+  def createCell(rowKey: String, cfName: String, qualifier: String, data: String) : Put = {
+    this.nsar(new Put(Bytes.toBytes(rowKey))) {
+      put =>
+        put.addColumn(Bytes.toBytes(cfName), Bytes.toBytes(qualifier), Bytes.toBytes(data))
+    }
+  }
+
+  def pugCells(tabName: String, puts: Seq[Put]): Unit = {
 
     import scala.collection.JavaConversions._
 
@@ -202,19 +217,24 @@ object HBaseHelper {
   }
 
 
-  def getRow(tabName: String, rowKey: String, filterList: FilterList = null): Option[Result] = {
+  def resultOption(tabName: String, rowKey: String, filter: Filter = null): Option[Result] = {
     this.withTable(tabName) {
       table => {
         val get = new Get(Bytes.toBytes(rowKey))
-        if (filterList != null) {
-          get.setFilter(filterList)
+        if (filter != null) {
+          get.setFilter(filter)
         }
         Option(table.get(get))
       }
     }
   }
 
-  def getScanner(tabName: String, caching: Int = 1000): Option[ResultScanner] = {
+
+  def resultScannerOption(tabName: String): Option[ResultScanner] = {
+    resultScannerOption(tabName, 1000)
+  }
+
+  def resultScannerOption(tabName: String, caching: Int): Option[ResultScanner] = {
     this.withTable(tabName) {
       table => {
         val scan = new Scan()
@@ -225,11 +245,29 @@ object HBaseHelper {
   }
 
 
-  def getScanner(tabName: String, startRowKey: String, stopRowKey: String): Option[ResultScanner] = {
-    this.getScanner(tabName, startRowKey, stopRowKey, 1000)
+
+  def resultScannerOption(tabName: String,
+                          startRowKey: String,
+                          stopRowKey: String,
+                          filter: Filter = null,
+                          caching: Int = 1000 ): Option[ResultScanner] = {
+    this.withTable(tabName) {
+      table => {
+
+        val scan = new Scan()
+        scan.setStartRow(Bytes.toBytes(startRowKey))
+        scan.setStopRow(Bytes.toBytes(stopRowKey))
+        if (filter != null) {
+          scan.setFilter(filter)
+        }
+        scan.setCaching(caching)
+
+        Option(table.getScanner(scan))
+      }
+    }
   }
 
-  def getScanner(tabName: String, startRowKey: String, stopRowKey: String, caching: Int): Option[ResultScanner] = {
+  def resultScannerOption(tabName: String, startRowKey: String, stopRowKey: String, caching: Int): Option[ResultScanner] = {
     this.withTable(tabName) {
       table => {
 
@@ -260,6 +298,18 @@ object HBaseHelper {
         table.delete(delete)
         Option(true)
       }
+    }
+  }
+
+
+
+
+  def withResultScanner[A](resultScanner: ResultScanner)(callback: ResultScanner => A) : A = {
+
+    try {
+      callback(resultScanner)
+    } finally {
+      resultScanner.close()
     }
   }
 
