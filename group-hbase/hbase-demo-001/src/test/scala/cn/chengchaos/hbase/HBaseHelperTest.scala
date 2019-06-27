@@ -71,16 +71,24 @@ class HBaseHelperTest {
     val scannerOption = HBaseHelper.resultScannerOption("mytest")
     if (scannerOption.nonEmpty) {
 
-      val scannerResult: ResultScanner= scannerOption.get
-      import scala.compat.java8.FunctionConverters._
+      val resultScanner: ResultScanner= scannerOption.get
 
-      val action : Result => Unit = r => {
-        println(r)
-        val value = Bytes.toString(r.value())
-        println(s"value ==> $value")
+      try {
+
+        import scala.compat.java8.FunctionConverters._
+
+        val action : Result => Unit = r => {
+          println(r)
+          val value = Bytes.toString(r.value())
+          println(s"value ==> $value")
+        }
+
+        resultScanner.forEach(action.asJava)
+      } catch {
+        case e:Exception => e.printStackTrace()
+      } finally {
+        resultScanner.close()
       }
-
-      scannerResult.forEach(action.asJava)
 
     }
 
