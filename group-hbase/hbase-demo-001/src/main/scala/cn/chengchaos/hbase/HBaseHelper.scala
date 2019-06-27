@@ -39,6 +39,8 @@ object HBaseHelper {
     whatever
   }
 
+  implicit def string2bytes(input: String) : Array[Byte] = Bytes.toBytes(input)
+
   def createHadoopConfiguration(): Configuration = {
     this.nsar(HBaseConfiguration.create()) {
       conf => {
@@ -87,8 +89,11 @@ object HBaseHelper {
 
     if (admin != null) {
       try {
-        block(admin)
-        true
+        val res = block(admin)
+        res match  {
+          case b: Boolean => b
+          case  _ => true
+        }
       } catch {
         case e: Exception =>
           logger.error("ex", e)
@@ -184,11 +189,8 @@ object HBaseHelper {
 
     this.withTable(tabName) {
       table => {
-        val put: Put = new Put(Bytes.toBytes(rowKey))
-        put.addColumn(Bytes.toBytes(cfName),
-          Bytes.toBytes(qualifier),
-          Bytes.toBytes(data))
-
+        val put: Put = new Put(rowKey)
+        put.addColumn(cfName, qualifier, data)
         table.put(put)
         Option(true)
       }
@@ -197,13 +199,12 @@ object HBaseHelper {
   }
 
   def createCell(rowKey: String, cfName: String, qualifier: String, data: String) : Put = {
-    this.nsar(new Put(Bytes.toBytes(rowKey))) {
-      put =>
-        put.addColumn(Bytes.toBytes(cfName), Bytes.toBytes(qualifier), Bytes.toBytes(data))
+    this.nsar(new Put(rowKey)) {
+      put => put.addColumn(cfName, qualifier, data)
     }
   }
 
-  def pugCells(tabName: String, puts: Seq[Put]): Unit = {
+  def putCells(tabName: String, puts: Seq[Put]): Unit = {
 
     import scala.collection.JavaConversions._
 
@@ -220,7 +221,7 @@ object HBaseHelper {
   def resultOption(tabName: String, rowKey: String, filter: Filter = null): Option[Result] = {
     this.withTable(tabName) {
       table => {
-        val get = new Get(Bytes.toBytes(rowKey))
+        val get = new Get(rowKey)
         if (filter != null) {
           get.setFilter(filter)
         }
@@ -255,8 +256,8 @@ object HBaseHelper {
       table => {
 
         val scan = new Scan()
-        scan.setStartRow(Bytes.toBytes(startRowKey))
-        scan.setStopRow(Bytes.toBytes(stopRowKey))
+        scan.setStartRow(startRowKey)
+        scan.setStopRow(stopRowKey)
         if (filter != null) {
           scan.setFilter(filter)
         }
@@ -272,8 +273,8 @@ object HBaseHelper {
       table => {
 
         val scan = new Scan()
-        scan.setStartRow(Bytes.toBytes(startRowKey))
-        scan.setStopRow(Bytes.toBytes(stopRowKey))
+        scan.setStartRow(startRowKey)
+        scan.setStopRow(stopRowKey)
         scan.setCaching(caching)
 
         Option(table.getScanner(scan))
@@ -284,7 +285,7 @@ object HBaseHelper {
   def deleteRow(tabName: String, rowKey: String): Option[Boolean] = {
     this.withTable(tabName) {
       table => {
-        table.delete(new Delete(Bytes.toBytes(rowKey)))
+        table.delete(new Delete(rowKey))
         Option(true)
       }
     }
@@ -293,8 +294,8 @@ object HBaseHelper {
   def deleteQualifier(tabName: String, rowKey: String, cfName: String, qualifier: String): Option[Boolean] = {
     this.withTable(tabName) {
       table => {
-        val delete = new Delete(Bytes.toBytes(rowKey))
-        delete.addColumn(Bytes.toBytes(cfName), Bytes.toBytes(qualifier))
+        val delete = new Delete(rowKey)
+        delete.addColumn(cfName, qualifier)
         table.delete(delete)
         Option(true)
       }

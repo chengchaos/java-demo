@@ -3,7 +3,7 @@ package cn.chengchaos.hbase
 import org.apache.hadoop.hbase.client.{Result, ResultScanner}
 import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp
 import org.apache.hadoop.hbase.filter.FilterList.Operator
-import org.apache.hadoop.hbase.filter.{BinaryComparator, FilterList, KeyOnlyFilter, PrefixFilter, RowFilter}
+import org.apache.hadoop.hbase.filter.{BinaryComparator, ColumnPrefixFilter, FilterList, KeyOnlyFilter, PrefixFilter, RowFilter}
 import org.apache.hadoop.hbase.util.Bytes
 import org.junit.Test
 
@@ -138,5 +138,27 @@ class HBaseFilterTest {
       })
       resultScanner.close()
     })
+  }
+
+  @Test
+  def columnPrefixFilterTest() : Unit = {
+    val filter = new ColumnPrefixFilter("name")
+    //val filterList = new FilterList(Operator.MUST_PASS_ALL, filter :: Nil)
+
+    val opts = HBaseHelper.resultScannerOption(tableName,
+      "rowkey1", "rowkey3", filter)
+
+    opts.foreach(HBaseHelper.withResultScanner(_) {
+      _.foreach(result => {
+        println("rowke ==> "+ Bytes.toString(result.getRow))
+        println("fileName ==> "+ Bytes.toString(result.getValue(
+          "fileInfo", "name"
+        )))
+        println("fileType ==> "+ Bytes.toString(result.getValue(
+          "fileInfo", "type"
+        )))
+      })
+    })
+
   }
 }
