@@ -48,10 +48,21 @@
         </dependency>
 
         <!-- logback-classic -->
+        <!--        <dependency>-->
+        <!--            <groupId>com.typesafe.scala-logging</groupId>-->
+        <!--            <artifactId>scala-logging-slf4j_2.11</artifactId>-->
+        <!--            <version>2.1.2</version>-->
+        <!--        </dependency>-->
+
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
+            <groupId>org.clapper</groupId>
+            <artifactId>grizzled-slf4j_2.11</artifactId>
+            <version>1.3.4</version>
+        </dependency>
+		<dependency>
+            <groupId>org.scala-lang.modules</groupId>
+            <artifactId>scala-java8-compat_2.11</artifactId>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

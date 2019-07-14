@@ -54,7 +54,7 @@ class HdfsService {
   def saveFile(dir: String
                , name: String
                , inputStream: InputStream
-               , length: Int
+               , length: Long
                , relication: Short) : Unit = {
     // 1 : 判断 dir 是否存在， 不存在则新建
 

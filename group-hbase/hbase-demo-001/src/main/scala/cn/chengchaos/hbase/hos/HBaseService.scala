@@ -3,7 +3,8 @@ package cn.chengchaos.hbase.hos
 import java.util
 
 import cn.chengchaos.hbase.HBaseHelper
-import org.apache.hadoop.hbase.client.Result
+import org.apache.hadoop.hbase.client.{Get, Put, Result}
+import org.apache.hadoop.hbase.util.Bytes
 import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, TableName}
 
 /**
@@ -18,11 +19,15 @@ import org.apache.hadoop.hbase.{HColumnDescriptor, HTableDescriptor, TableName}
   * @see 【相关类方法】
   * @since 1.1.0
   */
-class HBaseService {
+object HBaseService {
 
   import scala.collection.JavaConversions._
   import scala.compat.java8.FunctionConverters._
+  implicit def string2bytes(in: String): Array[Byte] = Bytes.toBytes(in)
 
+  implicit def long2bytes(in: Long): Array[Byte] = Bytes.toBytes(in)
+
+  implicit def integer2bytes(in: Int): Array[Byte] = Bytes.toBytes(in)
   /**
     * 创建表
     *
@@ -32,7 +37,7 @@ class HBaseService {
     * @return
     */
   def createTable(tableName: String, cfs: Array[String],
-                  splitKeys: Array[Array[Byte]]) : Boolean = {
+                  splitKeys: Array[Array[Byte]] = null): Boolean = {
     HBaseHelper.withHBaseAdmin(admin => {
       if (admin.tableExists(tableName)) false
       else {
@@ -51,29 +56,32 @@ class HBaseService {
 
   /**
     * 2 删除表
+    *
     * @param tableName
     * @return
     */
-  def deleteTable(tableName: String) : Boolean = {
+  def deleteTable(tableName: String): Boolean = {
     HBaseHelper.withHBaseAdmin(admin => {
       admin.deleteTable(tableName)
     })
-//    HBaseHelper.deleteTable(tableName)
+    //    HBaseHelper.deleteTable(tableName)
   }
 
   /**
     * 3 删除列族
+    *
     * @param tableName
     * @param cfName
     * @return
     */
 
-  def deleteColumnFamily(tableName: String, cfName: String) : Boolean = {
+  def deleteColumnFamily(tableName: String, cfName: String): Boolean = {
     HBaseHelper.deleteColumnFamily(tableName, cfName)
   }
 
   /**
     * 4 删除列S
+    *
     * @param tableName
     * @param rowKey
     * @param cf
@@ -83,7 +91,7 @@ class HBaseService {
   def celeteColumnQualifier(tableName: String
                             , rowKey: String
                             , cf: String
-                            , qualifier: String) :Boolean = {
+                            , qualifier: String): Boolean = {
     HBaseHelper.deleteQualifier(tableName, rowKey, cf, qualifier)
       .getOrElse(false)
   }
@@ -95,7 +103,7 @@ class HBaseService {
     * @param rowKey
     * @return
     */
-  def deleteRow(tableName: String, rowKey: String) : Boolean = {
+  def deleteRow(tableName: String, rowKey: String): Boolean = {
     HBaseHelper.deleteRow(tableName, rowKey).getOrElse(false)
   }
 
@@ -106,14 +114,48 @@ class HBaseService {
     * @param rowKey
     * @return
     */
-  def readLine(tableName: String, rowKey: String) : Result = {
-    HBaseHelper.resultOption(tableName, rowKey).get
+  def readLine(tableName: String, rowKey: String): Either[Boolean, Result] = {
+    val option = HBaseHelper.resultOption(tableName, rowKey)
+    if (option.isDefined) {
+      Right(option.get)
+    }
+    else {
+      Left(false)
+    }
   }
 
   // 7 读取 Scanner
 
   // 8 插入行
+  def putRow(tableName: String, put: Put): Unit = {
+    HBaseHelper.putCells(tableName, put :: Nil)
+  }
 
   // 9 批量插入
 
+  // 10 incrementColumnValue
+  def incrementColumnValue(tableName: String
+                           , rowkey: String
+                           , cf: Array[Byte]
+                           , qualifier: Array[Byte]
+                           , num: Int): Option[Long] = {
+
+    HBaseHelper.withTable(tableName) {
+      table => {
+        val longResult = table.incrementColumnValue(rowkey
+        , cf
+        , qualifier
+        , num)
+        Some(longResult)
+      }
+    }
+  }
+
+  def existsRow(tableName: String, rowKey: String) : Boolean = {
+    HBaseHelper.withTable(tableName) {
+      table => {
+        Some(table.exists(new Get(rowKey)))
+      }
+    }.getOrElse(false)
+  }
 }

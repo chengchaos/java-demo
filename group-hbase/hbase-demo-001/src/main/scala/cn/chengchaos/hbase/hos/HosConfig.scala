@@ -42,7 +42,7 @@ object HosConfig {
 
   val FILE_STORE_ROOT: String = "/hos";
 
-  val fILE_STORE_THRESHOLD: Int = 20 * 1024 * 1024
+  val FILE_STORE_THRESHOLD: Int = 20 * 1024 * 1024
 
   val BUCKET_DIR_SEQ_TABLE :String = "hos_dir_seq"
 
@@ -52,6 +52,12 @@ object HosConfig {
 
   val BUCKET_DIR_SEQ_QUALIFIER: Array[Byte] = Bytes.toBytes("s")
 
+
+  val OBJ_REGIONS: Array[Array[Byte]] = Array(
+    Bytes.toBytes("1")
+    , Bytes.toBytes("4")
+    , Bytes.toBytes("7")
+  )
   def getDirTableName(bucketName: String) : String = {
     DIR_TABLE_PREFIX + bucketName
   }
