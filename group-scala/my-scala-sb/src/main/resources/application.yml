@@ -1,0 +1,26 @@
+
+server:
+  port: 8083
+  servlet:
+    context-path: /demo
+spring:
+  application:
+    name: my-scala003
+  cloud:
+    service-registry:
+      auto-registration:
+        enabled: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+project:
+  tomcat:
+    connection-timeout: 10000
+    max-connections: 8192
+    max-threads: 4096
+    accept-count: 256
+    min-spare-threads: 32
