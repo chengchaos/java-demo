@@ -23,12 +23,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.scala.version>[2.11.12,)</project.scala.version>
+        <scala.version>2.11.12</scala.version>
 	</properties>
 
     <repositories>
         <repository>
             <id>fma-group</id>
-            <url>https://www.chengchaos.cn/nexus/repository/fma-group/</url>
+            <url>https://pts-tsp.futuremove.cn/repository/fma-group/</url>
         </repository>
 
         <repository>
@@ -54,27 +55,27 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>${project.scala.version}</version>
+            <version>${scala.version}</version>
         </dependency>
 
         <!-- Scala Compiler -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
-            <version>[2.11.12,)</version>
+            <version>${scala.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.scala-lang.modules</groupId>
-            <artifactId>scala-xml_2.11</artifactId>
-            <version>1.0.6</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.scala-lang.modules</groupId>-->
+<!--            <artifactId>scala-xml_2.11</artifactId>-->
+<!--            <version>1.0.6</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>org.scala-lang.modules</groupId>
-            <artifactId>scala-parser-combinators_2.11</artifactId>
-            <version>1.0.5</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.scala-lang.modules</groupId>-->
+<!--            <artifactId>scala-parser-combinators_2.11</artifactId>-->
+<!--            <version>1.0.5</version>-->
+<!--        </dependency>-->
 
         <!-- Scala Java8 Compat -->
         <dependency>
@@ -113,6 +114,8 @@
             <artifactId>tsp-spring-uni-dbs</artifactId>
             <version>1.0.1-SNAPSHOT</version>
         </dependency>
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -218,7 +221,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <scalaVersion>${project.scala.version}</scalaVersion>
+                    <scalaVersion>${scala.version}</scalaVersion>
                 </configuration>
             </plugin>
 

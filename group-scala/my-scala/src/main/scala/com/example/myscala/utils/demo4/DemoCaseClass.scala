@@ -42,7 +42,7 @@ class Pizza(var crustSize:Int, var crustType: String) {
     this(crustSize, Pizza.DEFAULT_CRUST_TYPE)
   }
   // one-arg auxiliary constructor
-  def this(curstType: String) {
+  def this(crustType: String) {
     this(Pizza.DEFAULT_CRUST_SIZE, crustType)
   }
 

@@ -1,0 +1,26 @@
+
+server:
+  port: 8083
+spring:
+  application:
+    name: http-client-demo
+  cloud:
+    service-registry:
+      auto-registration:
+        enabled: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+
+project:
+  httpClient:
+    maxTotal: 1000
+    defaultMaxPerRoute: 1000
+    validateAfterInactivity: 2000
+    connectTimeout: 1000
+    connectionRequestTimeout: 500
+    socketTimeout: 10000
