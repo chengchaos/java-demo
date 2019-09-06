@@ -3,7 +3,6 @@ package cn.chengchaos.demo.httpclient.controller
 import java.nio.charset.StandardCharsets
 
 import grizzled.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{GetMapping, RestController}
 import org.springframework.web.client.RestTemplate
