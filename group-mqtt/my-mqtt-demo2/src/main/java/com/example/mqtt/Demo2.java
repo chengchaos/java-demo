@@ -5,6 +5,10 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
+
 /**
  * <p>
  * <strong>
@@ -21,8 +25,13 @@ public class Demo2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Demo2.class);
 
+    private static final String mqttServerHost = "tcp://v2x-admin.guojinauto.com";
+    private static final int mqttServerPort = 1883;
+    private static final String mqttClientId = "JavaSample2";
+    private static final String defTopic = "MQTT-Examples"; //"device/" + mqttClientId;
 
-    public static void run() {
+    public static MqttAsyncClient run() {
+
 
         try {
             /*
@@ -31,7 +40,8 @@ public class Demo2 {
             final MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
             mqttConnectOptions.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1_1);
             mqttConnectOptions.setKeepAliveInterval(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT);
-
+            mqttConnectOptions.setUserName("10000042");
+            mqttConnectOptions.setPassword("cLc5T39K".toCharArray());
             /*
              * 第 2 步： 创建 MqttClientPersistence 实例
              *
@@ -42,11 +52,10 @@ public class Demo2 {
              */
             MqttClientPersistence memoryPersistence = new MemoryPersistence();
 
-            final String mqttServerHost = "localhost";
-            final int mqttServerPort = 1883;
+
             final String mqttServerURI = String.format("tcp://$s:$d", mqttServerHost, mqttServerPort);
 
-            final String mqttClientId = MqttAsyncClient.generateClientId();
+            // final String mqttClientId = MqttAsyncClient.generateClientId()
 
             LOGGER.info("mqttClientId ==> {}", mqttClientId);
 
@@ -58,7 +67,7 @@ public class Demo2 {
                     mqttClientId,
                     memoryPersistence
             );
-            final String defTopic = "chengchao/drone01/def";
+
 
             /*
              * 第 4 步： 设置回调
@@ -72,18 +81,66 @@ public class Demo2 {
                 @Override
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     LOGGER.info("messageArrived topic ==> {}", topic);
-                    if (!topic.equals(defTopic)) {
-                        return;
-                    }
+//                    if (!topic.equals(defTopic)) {
+//                        return;
+//                    }
                     String messageText = new String(message.getPayload(), "UTF-8");
                     LOGGER.info("Topic: {}. Payload: {}", topic, messageText);
                 }
 
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
-
+                    LOGGER.info("token -=> {}", token);
                 }
             });
+
+            IMqttActionListener subscribeListenner = new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    LOGGER.info("subscribe callback's asyncActionToken ==> {}", asyncActionToken);
+                    LOGGER.info("asyncActionToken ==> {}", asyncActionToken.getClass());
+                    String[] topics = asyncActionToken.getTopics();
+
+                    Stream.of(topics).forEach(topic ->
+                            LOGGER.info("Subscribed to the {} topic with QoS: {}", topic, asyncActionToken.getGrantedQos()[0]));
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    LOGGER.error("", exception);
+                }
+            };
+
+
+            IMqttActionListener connListener = new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    String subscribeTopic = "device/JavaSample2";
+                    String[] topics = asyncActionToken.getTopics();
+                    if (topics != null) {
+                        Stream.of(topics).forEach(topic -> LOGGER.info("connListener ... topic : {}", topics));
+                    }
+                    try {
+                        IMqttToken subscribeToken = mqttAsyncClient.subscribe(
+                                subscribeTopic, 0,
+                                null,
+                                subscribeListenner);
+
+                        LOGGER.info("订阅 ==> {}, subscribeToken -=>{}", subscribeTopic, subscribeToken);
+
+                        LOGGER.info("连接成功");
+
+                    } catch (Exception e) {
+                        LOGGER.error("", e);
+                    }
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
+                    LOGGER.error("", exception);
+                }
+            };
 
             /*
              * 第 5 步： 连接
@@ -91,59 +148,38 @@ public class Demo2 {
             IMqttToken mqttConnectToken = mqttAsyncClient.connect(
                     mqttConnectOptions,
                     null, // userContext
-                    new IMqttActionListener() {
-                        @Override
-                        public void onSuccess(IMqttToken asyncActionToken) {
-                            org.eclipse.paho.client.mqttv3.MqttToken mqttToken;
-                            LOGGER.info("Successfully connected");
-                            LOGGER.info("connect callback's asyncActionToken ==> {}", asyncActionToken);
-                            LOGGER.info("asyncActionToken ==> {}", asyncActionToken.getClass());
-                            try {
-                                IMqttToken subscribeToken = mqttAsyncClient.subscribe(
-                                        defTopic, 0,
-                                        null,
-                                        new IMqttActionListener() {
-                                            @Override
-                                            public void onSuccess(IMqttToken asyncActionToken) {
-                                                LOGGER.info("subscribe callback's asyncActionToken ==> {}", asyncActionToken);
-                                                LOGGER.info("asyncActionToken ==> {}", asyncActionToken.getClass());
-                                                LOGGER.info("Subscribed to the {} topic with QoS: {}", defTopic,
-                                                        asyncActionToken.getGrantedQos()[0]);
-                                            }
-
-                                            @Override
-                                            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                                                LOGGER.error("", exception);
-                                            }
-                                        }
-                                );
-
-                                LOGGER.info("subscribeToken ==> {}", subscribeToken);
-
-                            } catch (Exception e) {
-                                LOGGER.error("", e);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-
-                            LOGGER.error("", exception);
-                        }
-                    }
-            );
+                    connListener);
 
             LOGGER.info("mqttConnectToken ==> {}", mqttConnectToken);
             boolean isComplete = mqttConnectToken.isComplete();
 
             LOGGER.info("iscomplete ==> {}", isComplete);
-
+            return mqttAsyncClient;
         } catch (MqttException me) {
             LOGGER.error("", me);
         }
+
+        return null;
     }
 
     public static void main(String[] args) {
-        run();
+        MqttAsyncClient mqttAsyncClient = run();
+
+        try {
+            TimeUnit.SECONDS.sleep(2L);
+            if (mqttAsyncClient != null) {
+                boolean connected = mqttAsyncClient.isConnected();
+                LOGGER.info(" mqttAsyncClient.isConnected() ? -=> {}", connected);
+
+//                for (int i = 0; i < 1000; i++) {
+//                    mqttAsyncClient.publish(defTopic, new MqttMessage(LocalDateTime.now().toString().getBytes()));
+//                    TimeUnit.SECONDS.sleep(2L);
+//                }
+                mqttAsyncClient.disconnect(5L);
+                mqttAsyncClient.close();
+            }
+        } catch (Exception e) {
+            LOGGER.error("", e);
+        }
     }
 }
