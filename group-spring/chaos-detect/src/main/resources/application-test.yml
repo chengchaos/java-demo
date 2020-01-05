@@ -1,0 +1,49 @@
+############################### 本地测试配置 ##################################
+spring:
+  profiles: test
+  kafka:
+    producer:
+      bootstrap-servers: 172.16.16.26:9092
+    consumer:
+      bootstrap-servers: 172.16.16.26:9092
+      group-id: netty-server-${my.server.id}
+      auto-offset-reset: latest #  latest, earliest, none
+  redis:
+    host: 172.16.16.26
+    password: sinogold
+    port: 6379
+  data:
+    mongodb:
+      port: 27018
+      host: 40.73.24.131
+      database: sinogold
+  rabbitmq:
+    host: 192.168.88.174
+    port: 5672
+    username: guest
+    password: guest
+  devtools:
+    add-properties: false
+
+mqtt:
+  host: tcp://172.16.16.26:1883
+  clientId: 1190
+  username: 110
+  password: futuremove
+  model: single
+zookeeper:
+  id: 10
+  url: 172.16.16.26:2181
+  namespace: sinogold
+  masterPath: /master
+  configPath: /config
+  serversPath: /servers
+activeLink:
+  kafka:
+    topic:
+      otaUpgrade: ota-upgrade
+      otaStatus: ota-status
+security:
+  user:
+    name: chengchao
+    password: sinogold%202018

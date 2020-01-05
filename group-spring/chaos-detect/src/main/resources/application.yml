@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: chaos-detect
+  profiles:
+    active: @project.env@
+server:
+  port: 8383
+  servlet:
+    context-path: /chaos-detect
+logging:
+  path: @logging.path@
+  file: chaos-detect.log
+  level:
+    com.sinogold: info
+
+my:
+  server:
+    id: 1001
+    info: 127.0.0.1:8383
+    listenport: 62003

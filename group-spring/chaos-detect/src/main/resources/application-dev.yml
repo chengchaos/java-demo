@@ -1,0 +1,51 @@
+############################### 本地测试配置 ##################################
+spring:
+  profiles: dev
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: CHAOS-DETECT
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    enabled-by-default: false
+    prometheus:
+      id: springmetrics
+  endpoint:
+    beans:
+      enabled: true
+    configprops:
+      enabled: true
+    env:
+      enabled: true
+    health:
+      enabled: true
+      show-details: always
+    mappings:
+      enabled: true
+    info:
+      enabled: true
+    hystrix:
+      stream:
+        enabled: true
+    loggers:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enable: true
+        step: 1m
+        descriptions: true
+  security:
+    user:
+      name: chengchao
+      password: sinogold%202018
