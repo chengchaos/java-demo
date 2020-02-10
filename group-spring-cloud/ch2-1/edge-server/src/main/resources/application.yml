@@ -1,0 +1,20 @@
+
+
+####
+server:
+  port: 8081
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: demo-eureka-client
+
+logging:
+  level:
+    root: INFO
+  path: ./target
+  file: eureka-server.log

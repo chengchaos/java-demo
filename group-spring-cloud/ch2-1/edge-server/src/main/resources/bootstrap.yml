@@ -1,0 +1,6 @@
+
+### Ribbon 的饿加载
+ribbon:
+  eager-load:
+    enabled: true
+    clients: ribbon-server

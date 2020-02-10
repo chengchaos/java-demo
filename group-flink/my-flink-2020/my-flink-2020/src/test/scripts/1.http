@@ -1,0 +1,6 @@
+GET https://www.baidu.com
+
+Accept: */*
+Cache-Control: no-cache
+
+###

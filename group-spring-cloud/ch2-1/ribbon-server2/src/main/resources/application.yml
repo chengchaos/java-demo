@@ -1,0 +1,20 @@
+
+
+####
+server:
+  port: 8182
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+spring:
+  application:
+    name: ribbon-server
+
+logging:
+  level:
+    root: INFO
+  path: ./target
+  file: eureka-server.log
