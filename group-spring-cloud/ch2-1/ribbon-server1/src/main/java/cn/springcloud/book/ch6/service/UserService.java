@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @HystrixCommand(fallbackMethod="defaultUser")
-    public String getuser(String username) throws Exception {
+    public String getUser(String username) {
         if (username.equals("spring")) {
             return "this is REAL user";
         } else {
-            throw new Exception("this is NOT REAL user");
+            throw new RuntimeException("this is NOT REAL user");
         }
     }
 

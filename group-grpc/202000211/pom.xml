@@ -3,19 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.springcloud.book</groupId>
-    <artifactId>ch2-1</artifactId>
+    <groupId>luxe.chaos</groupId>
+    <artifactId>demo20200211</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>ch2-1</name>
-    <description>ch2-1</description>
+    <name>demo20200211</name>
+    <description>demo20200211</description>
 
     <modules>
-        <module>eureka-server</module>
-        <module>edge-server</module>
-        <module>ribbon-server1</module>
-        <module>ribbon-server2</module>
+        <module>demo-grpc-01</module>
+        <module>demo-server-01</module>
+        <module>demo-client-01</module>
     </modules>
 
     <parent>
@@ -70,32 +69,32 @@
             <url>https://repo.spring.io/milestone</url>
         </repository>
 
-<!--        <repository>-->
-<!--            <id>spring-snapshots</id>-->
-<!--            <name>Spring Snapshots</name>-->
-<!--            <url>https://repo.spring.io/snapshot</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
+        <!--        <repository>-->
+        <!--            <id>spring-snapshots</id>-->
+        <!--            <name>Spring Snapshots</name>-->
+        <!--            <url>https://repo.spring.io/snapshot</url>-->
+        <!--            <snapshots>-->
+        <!--                <enabled>true</enabled>-->
+        <!--            </snapshots>-->
+        <!--        </repository>-->
 
-<!--        <repository>-->
-<!--            <id>spring-milestones</id>-->
-<!--            <name>Spring Milestones</name>-->
-<!--            <url>https://repo.spring.io/libs-milestone</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>false</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
+        <!--        <repository>-->
+        <!--            <id>spring-milestones</id>-->
+        <!--            <name>Spring Milestones</name>-->
+        <!--            <url>https://repo.spring.io/libs-milestone</url>-->
+        <!--            <snapshots>-->
+        <!--                <enabled>false</enabled>-->
+        <!--            </snapshots>-->
+        <!--        </repository>-->
 
-<!--        <repository>-->
-<!--            <id>spring-milestones</id>-->
-<!--            <name>Spring Milestones</name>-->
-<!--            <url>https://repo.spring.io/milestone</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
+        <!--        <repository>-->
+        <!--            <id>spring-milestones</id>-->
+        <!--            <name>Spring Milestones</name>-->
+        <!--            <url>https://repo.spring.io/milestone</url>-->
+        <!--            <snapshots>-->
+        <!--                <enabled>true</enabled>-->
+        <!--            </snapshots>-->
+        <!--        </repository>-->
     </repositories>
 
     <pluginRepositories>
@@ -139,7 +138,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            
+
             <!-- Java 编译 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

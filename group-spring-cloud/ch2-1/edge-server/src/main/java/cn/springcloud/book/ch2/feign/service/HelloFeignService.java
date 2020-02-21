@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "github-client",
-        url = "https://www.chengchaos.cn",
-        configuration = HelloFeignServiceConfig.class,
-        fallback = HelloFeignServiceFallback.class
+        url = "https://api.github.com",
+        configuration = HelloFeignServiceConfig.class
+        //fallback =  cn.springcloud.book.ch2.feign.service.HelloFeignServiceFallback.class
 )
 public interface HelloFeignService {
 
