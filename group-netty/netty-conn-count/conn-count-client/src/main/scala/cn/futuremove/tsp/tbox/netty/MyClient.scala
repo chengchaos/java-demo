@@ -26,7 +26,8 @@ import io.netty.handler.timeout.IdleStateHandler
   * @see 【相关类方法】
   * @since 1.1.0
   */
-class MyClient extends LazyLogging {
+class MyClient(ip: String) extends LazyLogging {
+
 
   def connect(inetPort: Int) : NioEventLoopGroup = {
 
@@ -50,7 +51,7 @@ class MyClient extends LazyLogging {
         }
       })
 
-    bootstrap.connect(new InetSocketAddress("192.168.88.174", inetPort))
+    bootstrap.connect(new InetSocketAddress(ip, inetPort))
       .sync()
       .addListener(new ChannelFutureListener {
         override def operationComplete(future: ChannelFuture): Unit = {

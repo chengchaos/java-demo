@@ -25,15 +25,15 @@ import java.util.Map;
  * @author chengchao - 18-11-22 下午1:48 <br />
  * @since 1.0
  */
-@Configuration
-@EnableKafka
+//@Configuration
+//@EnableKafka
 public class KafkaProducerConfig {
 
     @Value("${kafka.broker.address}")
     private String brokerAddress;
 
 
-    @Bean
+//    @Bean
     public Map<String, Object> producerConfigs() {
         Map<String, Object> props = new HashMap<>();
 
@@ -48,7 +48,7 @@ public class KafkaProducerConfig {
     }
 
 
-    @Bean
+//    @Bean
     public ProducerFactory<String, String> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfigs());
     }

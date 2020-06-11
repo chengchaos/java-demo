@@ -23,7 +23,7 @@ public class Listener {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(Listener.class);
 
-    @KafkaListener(topics = "chengchao", group = "sync-group")
+//    @KafkaListener(topics = "HelloKafkaTopic", group = "sync-group")
     public void listen(ConsumerRecord<?, ?> record) {
 
         Optional<?> kafkaMessage = Optional.ofNullable(record.value());

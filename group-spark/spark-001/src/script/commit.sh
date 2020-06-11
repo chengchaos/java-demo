@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-spark-submit \
---class cn.chengchaos.SqlContextApp \
---master local[2] \
-/home/chengchao/lib/my-scala-01.jar \
-/home/chengchao/files/people.json
+
+MASTER_TYPE='local[2]'
+APP_NAME='MyApp'
+MAIN_CLASS='cn.chengchaos.SqlContextApp'
+JAR_PATH='/home/chengchao/lib/my-scala-01.jar'
+
+spark-submit --name ${APP_NAME} \
+  --master ${MASTER_TYPE} \
+  --class ${MAIN_CLASS}  \
+  ${JAR_PATH} \
+  file:///home/chengchao/files/people.json

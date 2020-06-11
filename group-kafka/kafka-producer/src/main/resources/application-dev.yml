@@ -2,7 +2,8 @@
 spring:
   kafka:
     producer:
-      bootstrap-servers: 40.73.24.131:9092
+#      bootstrap-servers: 40.73.24.131:9092
+      bootstrap-servers: 192.168.0.201:9092
   redis:
     host: 40.73.24.131
     password: sinogold

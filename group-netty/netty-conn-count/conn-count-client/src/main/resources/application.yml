@@ -12,3 +12,5 @@ logging:
   file: logs/tbox-gateway.out
   level:
     com.sinogold: info
+project:
+  ip-address: 192.168.0.110

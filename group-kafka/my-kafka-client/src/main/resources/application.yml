@@ -15,4 +15,4 @@ endpoints:
 
 kafka:
   broker:
-    address: matrix420:9092
+    address: 192.168.0.201:9092

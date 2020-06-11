@@ -31,7 +31,7 @@ import java.util.Map;
  * @since 1.0
  */
 @Configuration
-@EnableKafka
+//@EnableKafka
 public class KafkaConsumerConfig {
 
     @Value("${kafka.broker.address}")

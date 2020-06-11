@@ -115,7 +115,6 @@ class MyConsumer(brokers: String, groupId: String, topic: String, taskId: String
   private def closeExecutor(executor: ExecutorService): Unit = {
 
     try {
-
       executor.shutdown()
       executor.awaitTermination(5000L, TimeUnit.MILLISECONDS)
     } catch {

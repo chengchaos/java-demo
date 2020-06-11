@@ -25,7 +25,7 @@
     <repositories>
         <repository>
             <id>fma-group</id>
-            <url>http://pts-tsp.futuremove.cn/nexus/repository/fma-group/</url>
+            <url>https://pts-tsp.futuremove.cn/nexus/repository/fma-group/</url>
         </repository>
 
         <repository>

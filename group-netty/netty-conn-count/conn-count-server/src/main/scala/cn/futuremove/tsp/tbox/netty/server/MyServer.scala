@@ -110,9 +110,5 @@ class MyServer extends LazyLogging {
 
         }
       })
-
-
-
   }
-
 }

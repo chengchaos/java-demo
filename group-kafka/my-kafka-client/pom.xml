@@ -1,78 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.example</groupId>
-	<artifactId>my-kafka-client</artifactId>
-	<version>1.0.1</version>
-	<packaging>jar</packaging>
+    <groupId>com.example</groupId>
+    <artifactId>my-kafka-client</artifactId>
+    <version>1.0.1</version>
+    <packaging>jar</packaging>
 
-	<name>my-kafka-client</name>
-	<description>Demo project for Spring Boot</description>
+    <name>my-kafka-client</name>
+    <description>Demo project for Spring Boot</description>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.6.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.6.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+    </properties>
 
     <repositories>
         <repository>
             <id>fma-group</id>
-            <url>http://pts-tsp.futuremove.cn/nexus/repository/fma-group/</url>
+            <url>https://pts-tsp.futuremove.cn/nexus/repository/fma-group/</url>
         </repository>
     </repositories>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Finchley.SR1</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-	<dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.SR1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-		<!-- spring-cloud-starter-config -->
-		<!--
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-config</artifactId>
-		</dependency>
-		-->
-		<!-- spring-cloud-starter-netflix-eureka-client -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
+        <!-- spring-cloud-starter-config -->
+        <!--
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+        -->
+        <!-- spring-cloud-starter-netflix-eureka-client -->
+        <!--		<dependency>-->
+        <!--			<groupId>org.springframework.cloud</groupId>-->
+        <!--			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+        <!--		</dependency>-->
 
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
+
         <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
         <dependency>
             <groupId>redis.clients</groupId>
@@ -113,26 +113,27 @@
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka</artifactId>
-            <version>1.1.0.RELEASE</version>
+            <!--            <version>1.1.0.RELEASE</version>-->
+            <version>2.2.5.RELEASE</version>
         </dependency>
 
 
         <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
-	<build>
-		<finalName>my-kafka-client</finalName>
+    <build>
+        <finalName>my-kafka-client</finalName>
 
-		<plugins>
+        <plugins>
             <!-- Spring-Boot-Maven -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
 
 
             <!-- Java 编译 -->
@@ -157,8 +158,8 @@
                 </configuration>
             </plugin>
 
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 
 
     <profiles>

@@ -36,7 +36,7 @@ object MyApplication extends LazyLogging {
     val groupId = "group01"
     val numberOfThread = 1
 
-    val brokers = "192.168.88.156:9092"
+    val brokers = "192.168.88.44:9092"
 
     val topic = "HelloKafkaTopic"
 

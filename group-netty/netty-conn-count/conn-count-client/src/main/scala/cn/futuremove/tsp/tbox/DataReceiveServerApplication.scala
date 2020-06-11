@@ -1,10 +1,10 @@
 package cn.futuremove.tsp.tbox
 
-import java.util.concurrent.{ExecutorService, Executors, TimeUnit}
+import java.util.concurrent.{Executors, TimeUnit}
 
+import cn.futuremove.tsp.tbox.config.{IPConfig, Ip}
 import cn.futuremove.tsp.tbox.global.ChannelHolder
 import cn.futuremove.tsp.tbox.netty.MyClient
-import cn.futuremove.tsp.tbox.netty.server.GatewayServer
 import io.netty.buffer.Unpooled
 import io.netty.channel.Channel
 import io.netty.util.CharsetUtil
@@ -12,16 +12,12 @@ import javax.annotation.PreDestroy
 import org.slf4j.{Logger, LoggerFactory}
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.context.annotation.ComponentScan
 
 import scala.annotation.tailrec
-import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, ListBuffer}
-import scala.util.Random
+import scala.collection.mutable.ListBuffer
 
 @SpringBootApplication
-@ComponentScan(basePackages = Array("cn.futuremove.tsp.tbox"))
+//@ComponentScan(basePackages = Array("cn.futuremove.tsp.tbox"))
 class DataReceiveServerApplication
 
 object DataReceiveServerApplication {
@@ -41,12 +37,13 @@ object DataReceiveServerApplication {
 
   def main(args: Array[String]): Unit = {
 
-    SpringApplication.run(classOf[DataReceiveServerApplication], args: _*)
+    val ctx = SpringApplication.run(classOf[DataReceiveServerApplication], args: _*)
 
-    val myClient = new MyClient()
+    val ip: Ip = ctx.getBean(classOf[Ip])
+    val myClient = new MyClient(ip.ip())
     for (inetPort <- 9000 to 9999) {
-
-      for (i <- 1 to 10) {
+      for (i <- 0 to 10) {
+        logger.info("connect => {}:{}", ip.ip(), inetPort)
         myClient.connect(inetPort)
       }
     }

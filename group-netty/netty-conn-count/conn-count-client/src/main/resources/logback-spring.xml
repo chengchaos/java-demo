@@ -35,7 +35,7 @@
     <logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>
     <logger name="com.sinogold.activelink" level="DEBUG"/>
 
-    <root level="${logLevel}">
+    <root level="INFO">
         <appender-ref ref="CONSOLE" />
     </root>
 </configuration>
