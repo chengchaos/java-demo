@@ -25,10 +25,22 @@ import scala.collection.mutable.ListBuffer
 class MyConsumer(brokers: String, groupId: String, topic: String, taskId: String = "01") extends LazyLogging {
 
 
+  import scala.collection.JavaConverters._
+
+  implicit def block2Runnable(codeBlock: => Unit): Runnable = {
+    new Runnable {
+      override def run(): Unit = codeBlock
+    }
+  }
+
   @volatile
   private var closeFlag: Boolean = false
 
 
+  /**
+   *
+   * @return
+   */
   private def createConfig(): Map[String, Object] = Map(
     ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG -> brokers,
     ConsumerConfig.GROUP_ID_CONFIG -> groupId,
@@ -41,19 +53,12 @@ class MyConsumer(brokers: String, groupId: String, topic: String, taskId: String
 
   )
 
-  import scala.collection.JavaConverters._
 
-  private val consumer: KafkaConsumer[String, String] = new KafkaConsumer[String, String](createConfig().asJava)
+  private val executorHolder = ListBuffer[ExecutorService]()
+  private val consumer: KafkaConsumer[String, String] = new KafkaConsumer[String, String](this.createConfig().asJava)
 
   consumer.subscribe(util.Arrays.asList(topic))
 
-  private val executorHolder = ListBuffer[ExecutorService]()
-
-  implicit def block2Runnable(block: => Unit): Runnable = {
-    new Runnable {
-      override def run(): Unit = block
-    }
-  }
 
   def execute(numberOfThreads: Int): Unit = {
     val executor: ExecutorService = new ThreadPoolExecutor(numberOfThreads,
@@ -61,9 +66,8 @@ class MyConsumer(brokers: String, groupId: String, topic: String, taskId: String
       0,
       TimeUnit.MICROSECONDS,
       new ArrayBlockingQueue[Runnable](1000),
-      new ThreadPoolExecutor.CallerRunsPolicy())
-
-
+      new ThreadPoolExecutor.CallerRunsPolicy()
+    )
 
     @tailrec
     def exec(): Unit = {
@@ -84,11 +88,12 @@ class MyConsumer(brokers: String, groupId: String, topic: String, taskId: String
       exec()
     }
 
-    executor.submit(new Runnable {
-      override def run(): Unit = {
-        exec()
-      }
-    })
+//    executor.submit(new Runnable {
+//      override def run(): Unit = {
+//        exec()
+//      }
+//    })
+    executor.submit(exec())
     executorHolder += executor
   }
 
