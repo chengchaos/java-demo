@@ -41,6 +41,6 @@ public class MyRibbonsApplication {
 
         ConfigurableApplicationContext context = SpringApplication.run(MyRibbonsApplication.class, args);
 
-        LOGGER.info("Eureka is started.");
+        LOGGER.info("MyRibbonsApplication is started.");
     }
 }

@@ -25,7 +25,8 @@ public class Demo2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Demo2.class);
 
-    private static final String mqttServerHost = "tcp://v2x-admin.guojinauto.com";
+//    private static final String mqttServerHost = "tcp://v2x-admin.guojinauto.com";
+    private static final String mqttServerHost = "47.114.98.28";
     private static final int mqttServerPort = 1883;
     private static final String mqttClientId = "JavaSample2";
     private static final String defTopic = "MQTT-Examples"; //"device/" + mqttClientId;
@@ -40,8 +41,8 @@ public class Demo2 {
             final MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
             mqttConnectOptions.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1_1);
             mqttConnectOptions.setKeepAliveInterval(MqttConnectOptions.KEEP_ALIVE_INTERVAL_DEFAULT);
-            mqttConnectOptions.setUserName("10000042");
-            mqttConnectOptions.setPassword("cLc5T39K".toCharArray());
+            mqttConnectOptions.setUserName("10000001");
+            mqttConnectOptions.setPassword("LIPHOxlP".toCharArray());
             /*
              * 第 2 步： 创建 MqttClientPersistence 实例
              *
@@ -53,8 +54,9 @@ public class Demo2 {
             MqttClientPersistence memoryPersistence = new MemoryPersistence();
 
 
-            final String mqttServerURI = String.format("tcp://$s:$d", mqttServerHost, mqttServerPort);
+            final String mqttServerURI = String.format("tcp://%s:%d", mqttServerHost, mqttServerPort);
 
+            LOGGER.info("mqttServerURI => {}", mqttServerURI);
             // final String mqttClientId = MqttAsyncClient.generateClientId()
 
             LOGGER.info("mqttClientId ==> {}", mqttClientId);
@@ -166,7 +168,7 @@ public class Demo2 {
         MqttAsyncClient mqttAsyncClient = run();
 
         try {
-            TimeUnit.SECONDS.sleep(2L);
+            TimeUnit.SECONDS.sleep(5L);
             if (mqttAsyncClient != null) {
                 boolean connected = mqttAsyncClient.isConnected();
                 LOGGER.info(" mqttAsyncClient.isConnected() ? -=> {}", connected);

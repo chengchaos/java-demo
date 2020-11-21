@@ -30,8 +30,14 @@ public class TimerDemo extends TimerTask {
     @Override
     public void run() {
 
-        System.out.println("Task is running");
+        String input = "123";
+
+        Integer intNum = Integer.valueOf(input, 10);
+        System.out.println("Task is running" + intNum);
+
     }
+
+
 
 
     public static void execute() {

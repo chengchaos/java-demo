@@ -55,7 +55,7 @@ public class DemoPublish {
                     MqttMessage message = new MqttMessage(content.getBytes(StandardCharsets.UTF_8));
                     message.setQos(qos);
                     sampleClient.publish(publishTopic, message);
-                    TimeUnit.SECONDS.sleep(60 * 10L);
+                    TimeUnit.SECONDS.sleep(3L);
                 }
 
             } catch (MqttException me) {
@@ -77,14 +77,16 @@ public class DemoPublish {
 
     public static void main(String[] args) throws Exception {
 
-        String broker = "tcp://v2x-admin.guojinauto.com:1883";
+//        String broker = "tcp://v2x-admin.guojinauto.com:1883";
+        String broker = "tcp://47.114.98.28:1883";
 
         String clientId = "JavaSample1";
-        String username = "chengchaos-666666";
-        String p = "cLc5T39K";
+        String username = "FMT-CE71807130051";
+//        username = "12345678910000001";;
+        String password = "aFqF0tFh";
 
         try {
-            start(broker, clientId, username, p);
+            start(broker, clientId, username, password);
             LOGGER.info(".....");
 
         } catch (InterruptedException e) {

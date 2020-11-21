@@ -16,11 +16,7 @@ package com.example.myscala.utils.demo4
   *   <li>固若 val 则只生成 getter 方法</li>
   *   <li>如果没有 var 和 val 则不会生成 getter 和 setter </li>
   *   <li>var 和 val 可以被 private 修饰，可以防止生成  getter 和 setter 方法</li>
-  *
   * </ul>
-  *
-  *
-  *
   */
 
 object MainClass1 {
@@ -38,6 +34,9 @@ object MainClass1 {
     // 在类体重定义的方法，实际上会在主构造方法重调用
 
     println("=== in le  MainClass1 : " + p)
+
+    val person = new Person("Cheng", "Chao")
+    println(s"person  => ${person.firstName}.${person.lastName}")
   }
 }
 

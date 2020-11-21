@@ -23,8 +23,9 @@ class PasswdCreator {
 
     val nums = "1234567890"
     //    val oths = """"!@#$%^&*()-_=+\\|`~[{]};:\'\",<.>/?"""
-    val oths = "!@#$%^&*()-_=+{}[];:,.<>/?"
-
+    //    val oths = "!@#$%^&*()-_=+{}[];:,.<>/?"
+    // 去掉 @, #, $, %, &, :, \, |, ', ", /, ? 这 些 个经常在 url 中是使用的字符。
+    val oths = "!^*()-_=+{}[];,.<>"
     val total = upps + lows + nums + oths;
 
     //    println("upps lenght: "+ upps.length)
