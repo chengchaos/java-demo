@@ -1,0 +1,44 @@
+##
+## server.port = 8808
+## server.servlet.context-path = /smd
+server:
+  port: 8808
+  servlet:
+    context-path: /smd
+
+## 也可以在 VM options 中填上：
+## -Dspring.output.ansi.enabled=ALWAYS
+#spring:
+#  output:
+#    ansi:
+#      enabled: ALWAYS
+#
+## spring.profiles.active = dev
+## spring.profiles = dev
+spring:
+  profiles: kaiwo
+  application:
+    name: spring-mongo-demo
+
+## spring.data.mongodb.uri=mongodb://name:pass@localhost:27017/test
+## spring.data.mongodb.uri=mongodb://user:pwd@ip1:port1,ip2:port2/database
+##spring:
+  data:
+    mongodb:
+#      uri: mongodb://kaiwo:OU%25lki.6oa4C%40x2*T*dwIF44@192.168.1.103:20000,192.168.1.86:20000,192.168.1.164:20000/chaos
+#      uri: mongodb://kaiwo:OU%lki.6oa4C@x2*T*dwIF44@117.80.112.24:20000,121.229.54.81:20000,221.229.219.120:20000/admin
+      uri: mongodb://kaiwo:OU%25lki.6oa4C%40x2*T*dwIF44@117.80.112.24:20000,121.229.54.81:20000,221.229.219.120:20000/chaos?authSource=admin&readPreference=primary&appname=MongoDB%20Compass&ssl=false
+      #      host: 192.168.0.112
+#      port: 27018
+#      database: chaos
+#      host: 117.80.112.24
+#      port: 20000
+#      username: kaiwo
+#      password: OU%lki.6oa4C@x2*T*dwIF44
+
+  ## 添加 ehcache.xml 配置文件的位置
+## 主类上增加 @EnableCaching 注解
+## spring.cache.jcache.config=classpath:ehcache.xml
+  cache:
+    jcache:
+      config: classpath*:ehcache.xml

@@ -1,6 +1,6 @@
 .idea
 .metadata
-.DS_Store
+**/.DS_Store
 *.iml
 *.zip
 */~$*
