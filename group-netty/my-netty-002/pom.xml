@@ -44,20 +44,18 @@
         </dependencies>
     </dependencyManagement>
 
+    <!-- 仓库 -->
     <repositories>
         <repository>
-            <id>fma-group</id>
-            <url>http://pts-tsp.futuremove.cn/nexus/repository/fma-group/</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/public</url>
             <releases>
                 <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
             </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
         </repository>
-
     </repositories>
 
     <dependencies>

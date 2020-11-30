@@ -1,0 +1,159 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>WebSocket Demo</title>
+</head>
+<body>
+  <script type="text/javascript">
+    // var ws = new WebSocket("wss://echo.websocket.org");
+    /*
+    ws.onerror = function(e) {
+      console.log('已关闭');
+    };
+    ws.onopen = function(e) {
+      console.log('握手成功');
+      ws.send('123456789');
+    }
+    ws.onclose = function() {
+      console.log('已关闭');
+    }
+    ws.onmessage = function(e) {
+      console.log('收到消息');
+      console.log(e);
+    }
+    */
+    
+    // 避免重复连接
+    var lockReconnect = false;
+
+    // var wsUrl = "wss://echo.websocket.org";
+    var wsUrl = "wss://pts-demo.futuremove.cn/platform-message/wsAlarm/1";
+    var ws;
+    var tt;
+
+    function createWebSocket() {
+      try {
+          
+        ws = new WebSocket(wsUrl);
+        console.log("createWebSocket ... ws =>", ws)
+        init();
+      } catch(e) {
+        console.log('catch');
+        reconnect(wsUrl, 'createWebSocket');
+      }
+    }
+
+    function init() {
+      ws.onclose = function () {
+        console.log('链接关闭, readyState => ', ws.readyState);
+        reconnect(wsUrl, "onclose");
+      };
+      ws.onerror = function() {
+        console.log('发生异常了, readyState => ', ws.readyState);
+        reconnect(wsUrl, "onerror");
+      };
+      ws.onopen = function () {
+        //心跳检测重置
+        heartCheck.start('onopen');
+      };
+      ws.onmessage = function (msg) {
+        //拿到任何消息都说明当前连接是正常的
+        console.log('接收到消息', msg);
+        //heartCheck.start('onmessage');
+      }
+    }
+
+    function reconnect(url, id) {
+        console.log("lockReconnect =>", lockReconnect, "; id =>", id );
+        if(lockReconnect) {
+            return;
+        };
+        lockReconnect = true;
+        //没连接上会一直重连，设置延迟避免请求过多
+        tt && clearTimeout(tt);
+        tt = setTimeout(function () {
+            createWebSocket(url);
+            lockReconnect = false;
+        }, 4000);
+    }
+
+
+    //心跳检测
+    var heartCheck = {
+      timeout: 4000,
+      timeoutObj: null,
+      serverTimeoutObj: null,
+
+      start: function(id) {
+        var self = this;
+        console.log('心跳检测 start => ', id);
+        this.timeoutObj && clearTimeout(this.timeoutObj);
+        this.serverTimeoutObj && clearTimeout(this.serverTimeoutObj);
+
+        this.timeoutObj = setTimeout(function(){
+            console.log("发送一个心跳, readyState => ", ws.readyState);
+            // 这里发送一个心跳，后端收到后，返回一个心跳消息，
+            var hb = formatDate(new Date())
+            console.log(formatDate(new Date()), '发送心跳数据 => ('+ hb +')');
+            ws.send(hb);
+            self.serverTimeoutObj = setTimeout(function() {
+                console.log("webSocket.readyState => ", ws.readyState);
+                // console.log(formatDate(new Date()), "如果没有收到服务器的回复，这时候应该断开重连。")
+                // ws.close();
+                // createWebSocket();
+                
+                if (ws.readyState == 1) {
+                    self.start(id)
+                } else {
+                    ws.close();
+                }
+                
+            }, self.timeout);
+
+        }, this.timeout)
+      }
+    }
+
+    function formatDate(date, fmt) {
+
+        if (!date || date == null) {
+            return null;
+        }
+        if (typeof date == 'string') {
+            return date;
+        }
+        if (!fmt) {
+            fmt = "yyyy-MM-dd hh:mm:ss";
+        }
+        var o = {
+            'M+': date.getMonth() + 1,  // 月份
+            'd+': date.getDate(),       // 日
+            'h+': date.getHours(),      // 小时
+            'm+': date.getMinutes(),    // 分
+            's+': date.getSeconds(),    // 秒
+            'q+': Math.floor((date.getMonth() + 3) / 3), // 季度
+            'S': date.getMilliseconds() // 毫秒
+        }
+        if (/(y+)/.test(fmt)) {
+            fmt = fmt.
+                replace(RegExp.$1, (date.getFullYear() + '').
+                substr(4 - RegExp.$1.length))
+        }
+
+        for (var k in o) {
+            if (new RegExp('(' + k + ')').test(fmt)) {
+                fmt = fmt.
+                    replace(RegExp.$1,
+                         (RegExp.$1.length === 1) ? 
+                            (o[k]) : 
+                            (('00' + o[k]).
+                                substr(('' + o[k]).length)))
+            }
+
+        }
+        return fmt
+    }
+    createWebSocket(wsUrl);
+  </script>
+</body>
+</html>

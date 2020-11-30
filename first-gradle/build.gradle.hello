@@ -1,0 +1,11 @@
+/*
+   task hello {
+    doLast {
+        println "Hello world!"
+    }
+}
+*/
+
+task world << {
+    println "hello world <<"
+}

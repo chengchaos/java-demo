@@ -1,7 +1,7 @@
 logging:
   #path: @logging.path@
   path: target/logs/
-  file: my-scala001.log
+  file: my-nett-002.log
   config: classpath:logback-spring.xml
   level:
     root: INFO

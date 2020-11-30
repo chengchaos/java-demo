@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="false" scan="false" scanPeriod="120 seconds">
 
-    <springProperty scope="context" name="logLevel" source="logging.level.root:-INFO"/>
-    <springProperty scope="context" name="logPath" source="logging.path:-target/logs"/>
-    <springProperty scope="context" name="logFile" source="logging.file:-flink-train-scala.log"/>
+<!--    <springProperty scope="context" name="logLevel" source="logging.level.root:-INFO"/>-->
+<!--    <springProperty scope="context" name="logPath" source="logging.path:-target/logs"/>-->
+<!--    <springProperty scope="context" name="logFile" source="logging.file:-flink-train-scala.log"/>-->
 
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />

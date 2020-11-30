@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /spring-mail
+
+spring:
+  profiles: dev
+
+  mail:
+    host: smtp.163.com # 10.163.40.14
+    username: xwalker
+    password: MFWEAZKFAILKNTOY
+    port: 465
+    protocol: smtps
+    properties:
+      mail.smtp.auth: true
+      mail.ssl.enable: true
+
+logging:
+  config: classpath:logback-spring-dev.xml
+  file:
+    path: ./target/log
+    name: spring-mail
+    max-size: 10MB
+    max-history: 7
+  level:
+    root: INFO
+    com.example.demo: DEBUG
+

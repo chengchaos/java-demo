@@ -1,0 +1,2 @@
+luxe/chaos/gradledemo/User.java
+ luxe.chaos.gradledemo.User

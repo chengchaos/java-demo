@@ -83,14 +83,14 @@ public class DemoSubscribe {
         //org.eclipse.paho.client.mqttv3.logging.LoggerFactory.setLogger("org.slf4j.Logger");
 
         //"tcp://v2x-admin.guojinauto.com:1883"
-        String broker = "tcp://v2x-admin.guojinauto.com:1883";
+        String broker = "tcp://47.114.98.28:1883";
         String clientId = "JavaSample2";
-        String username = "chengchaos-666666";
-        String whoCanSee = "cLc5T39K";
+        String username = "FMT-CE71807130051";
+        String password = "aFqF0tFh";
 
         try {
 
-            start(broker, clientId, username, whoCanSee);
+            start(broker, clientId, username, password);
             TimeUnit.DAYS.sleep(Long.MAX_VALUE);
         } catch (InterruptedException ie) {
             LOGGER.error("InterruptedException", ie);

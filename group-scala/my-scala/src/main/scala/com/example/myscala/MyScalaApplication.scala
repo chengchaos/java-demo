@@ -1,6 +1,6 @@
-package com.example.myscala
+package com.example.myscala;
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
