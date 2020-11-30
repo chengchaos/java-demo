@@ -3,7 +3,7 @@ server:
   port: 8284
 spring:
   application:
-    name: my-netty-002
+    name: my-netty-001
   cloud:
     service-registry:
       auto-registration:
