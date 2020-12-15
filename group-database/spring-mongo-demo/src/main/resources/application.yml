@@ -21,18 +21,8 @@ spring:
   application:
     name: spring-mongo-demo
 
-## spring.data.mongodb.uri=mongodb://name:pass@localhost:27017/test
-## spring.data.mongodb.uri=mongodb://user:pwd@ip1:port1,ip2:port2/database
-##spring:
-  data:
-    mongodb:
-      uri: mongodb://192.168.0.103:27018/chaos
-#      host: 192.168.0.112
-#      port: 27018
-#      database: chaos
-
 ## 添加 ehcache.xml 配置文件的位置
-## 主类上增加 @EnableCaching 注解
+## 主类上增加 @EnableCaching 注
 ## spring.cache.jcache.config=classpath:ehcache.xml
   cache:
     jcache:

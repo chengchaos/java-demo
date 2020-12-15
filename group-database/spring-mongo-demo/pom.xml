@@ -194,6 +194,14 @@
 		</profile>
 
 		<profile>
+			<id>kaiwo</id>
+			<properties>
+				<project.env>kaiwo</project.env>
+				<project.log.path>target/logs/</project.log.path>
+			</properties>
+		</profile>
+
+		<profile>
 			<id>sonar</id>
 			<properties>
 				<!-- Optional URL to server. Default value is http://localhost:9000 -->

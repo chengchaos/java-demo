@@ -42,7 +42,7 @@ object RwMongoApp {
 
     // 更多配置参考：
     // https://docs.mongodb.com/spark-connector/master/configuration/
-    var sparkSession:SparkSession = SparkSession.builder()
+    val sparkSession:SparkSession = SparkSession.builder()
       .master("local")
       .appName("RwMongoApp")
       .config("spark.mongodb.input.uri", "mongodb://127.0.0.1:27017/chaos.cheng")
