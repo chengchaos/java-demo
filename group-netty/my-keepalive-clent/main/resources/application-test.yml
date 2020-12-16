@@ -1,0 +1,11 @@
+
+spring:
+  profiles: test
+
+server:
+  port: 10031
+
+project:
+  auto-start:
+    netty: true
+    kafka: true

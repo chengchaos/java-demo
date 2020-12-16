@@ -4,8 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.nio.ByteBuffer;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -24,13 +22,13 @@ public class Bytes {
     private static sun.misc.Unsafe UNSAFE; // NOSONAR
 
     /**
-     * 一个空字符串
+     * A empty string
      */
     public static final String EMPTY_STRING = "";
 
 
     /**
-     * 一个空的字节数组
+     * A empty byte array.
      */
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -62,6 +60,20 @@ public class Bytes {
     }
 
 
+    /**
+     * int 类型转换成 byte 数组
+     * <pre>
+     * int a = 2088599167
+     * int2bytes2u(a, 4) // [124, 125, 126, 127]
+     * int2bytes2u(a, 3) // [125, 126, 127]
+     * int2bytes2u(a, 2) // [126, 127]
+     * int2bytes2u(a, 1) // [127]
+     * </pre>
+     *
+     * @param number int 类型得数组
+     * @param len    byte 数组得长度（从低位开始数）
+     * @return
+     */
     public static byte[] int2bytes2u(int number, int len) {
 
         byte[] result = new byte[len];
@@ -70,6 +82,7 @@ public class Bytes {
         }
         return result;
     }
+
 
     public static byte[] int2bytes2s(int number, int len) {
 
@@ -96,7 +109,7 @@ public class Bytes {
     }
 
 
-    public static int bytes2int(byte a) {
+    public static int byte2int(byte a) {
         return ((int) a) & 0xff;
     }
 
@@ -112,7 +125,7 @@ public class Bytes {
     }
 
 
-    public static long bytes2long(byte a) {
+    public static long byte2long(byte a) {
         return ((long) a) & 0xffL;
     }
 
@@ -216,12 +229,12 @@ public class Bytes {
 
     public static boolean checkBbc(byte[] original) {
         byte calc = calcBcc(original);
-        byte curr =  original[original.length -1 ];
+        byte curr = original[original.length - 1];
         return (calc == curr);
     }
 
     public static void setBc(byte[] original) {
         byte bbc = calcBcc(original);
-        original[original.length -1 ] = bbc;
+        original[original.length - 1] = bbc;
     }
 }
