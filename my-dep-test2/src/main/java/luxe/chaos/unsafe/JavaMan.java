@@ -15,8 +15,8 @@ public class JavaMan {
     public static void main(String[] args) {
 
         byte[] times = Bytes.int2bytes2(666);
-        long six6 = Bytes.bytes2int(times[0], times[1]);
+        long six66 = Bytes.bytes2int(times[0], times[1]);
 
-        System.out.println("six6 => "+ six6);
+        System.out.println("six66 => "+ six66);
     }
 }

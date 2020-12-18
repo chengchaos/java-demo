@@ -33,23 +33,42 @@ public class EchoClientHandler extends ChannelInboundHandlerAdapter {
 
     }
 
+    private volatile boolean running = false;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         if (msg instanceof String) {
             logger.info("收到回复 => {}", msg);
         }
-        String template = "This is 间隔 %d 分中后发送の";
-        long next = 1;
-        for (int i = 0; i < 100; i++) {
-            TimeUnit.MINUTES.sleep(next);
-            String message = String.format(template, next);
-            logger.info(message);
-            ByteBuf byteBuf = this.getByteBuf(ctx, message);
-            ctx.writeAndFlush(byteBuf);
-            next += 1;
+
+        if (running) {
+            return;
         }
+        this.running = true;
+
+        new Thread(() -> {
+            String template = "This is 间隔 %d 分中后发送の";
+            long next = 9;
+            for (int i = -1; i < 1000; i++) {
+                try {
+                    TimeUnit.MINUTES.sleep(next);
+                    String message = String.format(template, next);
+                    logger.info(message);
+                    ByteBuf byteBuf = this.getByteBuf(ctx, message);
+                    ctx.writeAndFlush(byteBuf);
+                    next += 1;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+
+//                    if (Thread.interrupted())  // Clears interrupted status!
+//                        throw new InterruptedException();
+                }
+            }
+        }).start();
+
     }
+
 
     private ByteBuf getByteBuf(ChannelHandlerContext ctx, String message) {
         ByteBuf byteBuf = ctx.alloc().buffer();

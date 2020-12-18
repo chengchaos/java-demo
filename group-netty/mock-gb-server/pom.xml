@@ -11,9 +11,9 @@
     </parent>
 
     <groupId>luxe.chaos.netty</groupId>
-    <artifactId>keepalive-client</artifactId>
+    <artifactId>mock-gb-server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>keepalive-client</name>
+    <name>mock-gb-server</name>
     <description>Demo project for Spring Boot</description>
 
 
@@ -22,7 +22,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <scala.version>2.13.3</scala.version>
-        
+        <netty.version>4.1.56.Final</netty.version>
+
         <spring-boot.version>2.1.3.RELEASE</spring-boot.version>
 
         <!-- 开罗 -->
@@ -44,21 +45,6 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>scalaz</id>
-            <name>scalaz</name>
-            <url>http://dl.bintray.com/scalaz/releases</url>
-        </repository>
-        <repository>
-            <id>mvnrepository</id>
-            <name>Derbysoft Release Repository</name>
-            <url>http://search.maven.org/remotecontent?filepath=</url>
-        </repository>
-        <repository>
-            <id>jahia</id>
-            <name>mvnrepository</name>
-            <url>http://maven.jahia.org/maven2</url>
-        </repository>
     </repositories>
 
     <dependencyManagement>
@@ -79,6 +65,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- 排除自带的 log -->
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
@@ -86,18 +73,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <!-- 引入log4j2依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
-        </dependency>
-
-        <!-- 支持 @ConfigurationProperties 注解 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
         </dependency>
 
         <!-- netty -->
@@ -105,8 +84,9 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.34.Final</version>
+            <version>${netty.version}</version>
         </dependency>
+
 
         <!-- https://www.jianshu.com/p/61df929aa98b -->
         <dependency>
@@ -128,7 +108,6 @@
 <!--            <artifactId>logback-classic</artifactId>-->
 <!--            <version>1.2.3</version>-->
 <!--        </dependency>-->
-
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -188,13 +167,11 @@
             </plugins>
         </pluginManagement>
         <!-- To use the plugin goals in your POM or parent POM -->
+
         <plugins>
-
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-
             </plugin>
 
 <!--            <plugin>-->
