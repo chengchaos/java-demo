@@ -10,6 +10,7 @@ import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import luxe.chaos.netty.mock.gb.handlers.*;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,38 +55,24 @@ public class MockServer {
     public void start(int port) {
 
         ServerBootstrap sb = new ServerBootstrap();
-        int bufferSize = 1024;
 
-        int availableProcessors = Runtime.getRuntime().availableProcessors();
+        Pair<EventLoopGroup, EventLoopGroup> elps = MockServers.allocateEventLoopGroup();
 
-        this.boss = new NioEventLoopGroup(availableProcessors);
-        this.works = new NioEventLoopGroup();
+        this.boss = elps.getLeft();
+        this.works = elps.getRight();
 
         sb.group(boss, works);
 
-        sb.channel(NioServerSocketChannel.class);
+        MockServers.allocateChannel(sb);
+
         sb.localAddress(new InetSocketAddress(port));
-
-
-        sb.option(ChannelOption.SO_REUSEADDR, true);
-        sb.option(ChannelOption.SO_RCVBUF, 1024 * bufferSize);
-        sb.option(ChannelOption.SO_BACKLOG, 1024);
-
         sb.childHandler(this.newChannelInitializer());
-
         sb.childOption(ChannelOption.SO_KEEPALIVE, true);
         sb.childOption(ChannelOption.TCP_NODELAY, true);
         sb.childOption(ChannelOption.SO_LINGER, 0);
+        sb.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30 * 60 * 1000);
 
-        sb.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30 * 1000);
-
-
-        ChannelFuture channelFuture = sb.bind(port)
-                .addListener(future -> logger.info("Mock Server 启动，监听端口 : {}", port));
-
-        channelFuture.channel()
-                .closeFuture()
-                .addListener((ChannelFutureListener) future -> logger.info("{} 链路关闭。", future.channel()));
+        MockServers.bind(sb, port);
 
         this.state = 1;
     }
