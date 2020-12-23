@@ -5,7 +5,10 @@ spring:
 server:
   port: 20030
 
+## 其实都写死了，下面写的暂时没啥用。
 project:
   auto-start:
     netty: true
     kafka: true
+  netty:
+    port: 60000

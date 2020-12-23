@@ -3,7 +3,11 @@ package luxe.chaos.netty.mock.gb.helpers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
 
 public class ByteHelper {
 
@@ -283,5 +287,63 @@ public class ByteHelper {
             }
         }
         return dataPacket;
+    }
+
+    /**
+     * Channel copy method 1. <br />
+     * This method copies data from the src channel and wirtes it to
+     * the dest channel until EOF on src.
+     * This implementation makes use of compact() on the temp buffer
+     * to pack down the data if the buffer wasn't fully drained.
+     * this may result in data copying, but minimizes system calls.
+     * It also requires a cleanup loop to make sure all the data gets sent.
+     *
+     * @param src ReadableByteChannel
+     * @param dest WritableByteChannel
+     * @throws IOException
+     */
+    public static void copyChannel1(ReadableByteChannel src, WritableByteChannel dest) throws IOException {
+
+        ByteBuffer buffer = ByteBuffer.allocateDirect(16 * 1024);
+        while (src.read(buffer) != -1) {
+            // Prepare the buffer to bo drained
+            buffer.flip();
+            dest.write(buffer);
+            // If partial transfer, shift remainder down
+            // If buffer is empty, same as doing clear()
+            buffer.compact();
+        }
+        // EOF will leave buffer in fill state
+        buffer.flip();
+        // Make sure that the buffer is fully drained.
+        while (buffer.hasRemaining()) {
+            dest.write(buffer);
+        }
+    }
+
+
+    /**
+     * Channel copy method 2. <br />
+     * This method performs the same copy, but
+     * assures the temp buffer is empty before reading more data.
+     * This never rquires data copying but may result in more systems calls.
+     * No post-loop cleanup is needed because the buffer will be empty
+     * when the loop is exited.
+     * @param src ReadableByteChannel
+     * @param dest WritableByteChannel
+     * @throws IOException
+     */
+    public static void copyChannel2(ReadableByteChannel src, WritableByteChannel dest) throws IOException {
+
+        ByteBuffer buffer = ByteBuffer.allocateDirect(16 * 1024);
+        while (src.read(buffer) != -1) {
+            buffer.flip();
+            // Make sure that the buffer was fully drained.
+            while (buffer.hasRemaining()) {
+                dest.write(buffer);
+            }
+            // Make the buffer empty, ready for filling
+            buffer.clear();
+        }
     }
 }

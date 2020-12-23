@@ -6,6 +6,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.nio.channels.Channel;
+import java.nio.channels.Channels;
 import java.time.LocalDateTime;
 
 public class DateTimeTest {
@@ -38,5 +41,17 @@ public class DateTimeTest {
         String dump = ByteBufUtil.hexDump(replyWrapped);
         logger.info("{}", dump);
 
+    }
+
+    @Test
+    public void channelTerst01() {
+        Channel channel = Channels.newChannel(System.out);
+        System.out.println(channel.isOpen());
+        try {
+            channel.close();
+            System.out.println(channel.isOpen());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

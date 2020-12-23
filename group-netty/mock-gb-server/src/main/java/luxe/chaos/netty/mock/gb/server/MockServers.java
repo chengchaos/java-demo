@@ -25,8 +25,13 @@ public class MockServers {
     private static final int bufferSize = 1024;
     private static final int availableProcessors = Runtime.getRuntime().availableProcessors();
 
+    static {
+        logger.info("Epoll.isAvailable() -=> {}", Epoll.isAvailable());
+        logger.info("KQueue.isAvailable() -=> {}", KQueue.isAvailable());
+    }
     private MockServers() {
         super();
+
     }
 
     public static Pair<EventLoopGroup, EventLoopGroup> allocateEventLoopGroup() {
@@ -63,9 +68,8 @@ public class MockServers {
     public static void bind(ServerBootstrap sb, int port) {
 
         if (Epoll.isAvailable() || KQueue.isAvailable()) {
-            final int[] ib = new int[0];
-            for (int i = 0; i < availableProcessors; i++) {
-                ib[0] = i;
+            final int[] ib = new int[1];
+            for ( ib[0] = 0; ib[0] < availableProcessors; ib[0] += 1) {
                 ChannelFuture channelFuture = sb.bind(port)
                         .addListener(future -> {
                             final int cpu = ib[0];
