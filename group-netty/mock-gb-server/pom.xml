@@ -97,16 +97,6 @@
             <version>${netty.version}</version>
         </dependency>
 
-
-        <!-- https://www.jianshu.com/p/61df929aa98b -->
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-transport-native-epoll</artifactId>
-            <version>4.1.34.Final</version>
-<!--            <classifier>linux-x86_64</classifier>-->
-            <classifier>${os.detected.name}-${os.detected.arch}</classifier>
-        </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -280,4 +270,35 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>freebsd</id>
+            <properties>
+                <dependencies>
+                    <!-- https://mvnrepository.com/artifact/io.netty/netty-transport-native-kqueue -->
+                    <dependency>
+                        <groupId>io.netty</groupId>
+                        <artifactId>netty-transport-native-kqueue</artifactId>
+                        <classifier>FreeBSD-x86_64</classifier>
+                        <version>${netty.version}</version>
+                    </dependency>
+                </dependencies>
+            </properties>
+        </profile>
+        <profile>
+            <id>linux</id>
+            <properties>
+                <dependencies>
+                    <!-- https://www.jianshu.com/p/61df929aa98b -->
+                    <dependency>
+                        <groupId>io.netty</groupId>
+                        <artifactId>netty-transport-native-epoll</artifactId>
+                        <version>${netty.version}</version>
+                        <classifier>linux-x86_64</classifier>
+                        <!--            <classifier>${os.detected.name}-${os.detected.arch}</classifier>-->
+                    </dependency>
+                </dependencies>
+            </properties>
+        </profile>
+    </profiles>
 </project>
