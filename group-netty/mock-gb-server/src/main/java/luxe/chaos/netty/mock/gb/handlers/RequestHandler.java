@@ -10,13 +10,18 @@ public class RequestHandler extends ChannelInboundHandlerAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
 
+    String unicode = "";
+    String username = "";
+    String password = "";
+
+    public RequestHandler(String unicode, String username, String password) {
+        this.unicode = unicode;
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-
-        String unicode = "";
-        String username = "";
-        String password = "";
 
         PlatformLogin platformLogin = new PlatformLogin(unicode, username, password);
 

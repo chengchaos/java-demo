@@ -53,6 +53,9 @@ public class ClientTest {
         bootstrap.group(elg);
         bootstrap.channel(NioSocketChannel.class);
 
+        String unicode = "00000000000000000";
+        String username = "GX100072";
+        String password = "123456";
 
         bootstrap.handler(new ChannelInitializer<SocketChannel>() {
             @Override
@@ -64,18 +67,21 @@ public class ClientTest {
                 /* 添加解码器*/
                 pipeline.addLast("decoder", new PacketDecoder());
                 pipeline.addLast("encoder", new PacketEncoder());
-                pipeline.addLast("requestHandler", new RequestHandler());
+                pipeline.addLast("requestHandler", new RequestHandler(unicode, username, password));
             }
         });
 
-
+        // 12345678901234567 | 模拟国标平台
+        // GX100072 | 123456
+        // 123.127.164.36 | 19006
+        // device_group_abc | 2019-09-24 00:00:00 |         1 |          1 |         2 | GB/T 32960-2016 | 模拟国标
         String hostname = "32960test.evsmc.org";
         int port = 19007;
         hostname = "123.127.164.36";
         port = 19006;
 
-        bootstrap.connect(new InetSocketAddress(hostname, port))
 
+        bootstrap.connect(new InetSocketAddress(hostname, port))
                 .addListener(future -> {
                     if (future.isSuccess()) {
                         logger.info("连接成功");

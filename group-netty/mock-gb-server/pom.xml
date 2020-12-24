@@ -20,7 +20,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <scala.version>2.13.3</scala.version>
         <netty.version>4.1.56.Final</netty.version>
 
@@ -30,6 +30,10 @@
         <platform-bom.version>Cairo-SR5</platform-bom.version>
         <!-- 芬奇利 -->
         <spring-cloud.version>Finchley.SR2</spring-cloud.version>
+
+        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
 
@@ -226,15 +230,21 @@
                 <version>3.8.0</version>
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <id>default-testCompile</id>
+                        <phase>test-compile</phase>
                         <goals>
-                            <goal>compile</goal>
+                            <goal>testCompile</goal>
                         </goals>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                    <source>11</source>
+                    <target>11</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

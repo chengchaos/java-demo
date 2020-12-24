@@ -31,7 +31,7 @@ import java.util.Arrays;
  * @see [相关类方法]
  * @since [产品模块版本]
  */
-@Component
+@Component(value = "mockServer")
 public class MockServer {
 
     private static final Logger logger = LoggerFactory.getLogger(MockServer.class);
@@ -54,25 +54,25 @@ public class MockServer {
      */
     public void start(int port) {
 
-        ServerBootstrap sb = new ServerBootstrap();
+        ServerBootstrap serverBootstrap = new ServerBootstrap();
 
-        Pair<EventLoopGroup, EventLoopGroup> elps = MockServers.allocateEventLoopGroup();
+        Pair<EventLoopGroup, EventLoopGroup> loopGroup = MockServers.allocateEventLoopGroup();
 
-        this.boss = elps.getLeft();
-        this.works = elps.getRight();
+        this.boss = loopGroup.getLeft();
+        this.works = loopGroup.getRight();
 
-        sb.group(boss, works);
+        serverBootstrap.group(boss, works);
 
-        MockServers.allocateChannel(sb);
+        MockServers.allocateChannel(serverBootstrap);
 
-        sb.localAddress(new InetSocketAddress(port));
-        sb.childHandler(this.newChannelInitializer());
-        sb.childOption(ChannelOption.SO_KEEPALIVE, true);
-        sb.childOption(ChannelOption.TCP_NODELAY, true);
-        sb.childOption(ChannelOption.SO_LINGER, 0);
-        sb.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30 * 60 * 1000);
+        serverBootstrap.localAddress(new InetSocketAddress(port));
+        serverBootstrap.childHandler(this.newChannelInitializer());
+        serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+        serverBootstrap.childOption(ChannelOption.TCP_NODELAY, true);
+        serverBootstrap.childOption(ChannelOption.SO_LINGER, 0);
+        serverBootstrap.childOption(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30 * 60 * 1000);
 
-        MockServers.bind(sb, port);
+        MockServers.bind(serverBootstrap, port);
 
         this.state = 1;
     }

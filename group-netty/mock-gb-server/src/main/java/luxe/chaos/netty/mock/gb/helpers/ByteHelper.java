@@ -8,36 +8,47 @@ import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.Charset;
 
 public class ByteHelper {
 
-    private ByteHelper() {
-        super();
-    }
-
     private static final Logger logger = LoggerFactory.getLogger(ByteHelper.class);
+
+
 
     private static long byteBaseOffset;
 
-    private static sun.misc.Unsafe UNSAFE; // NOSONAR
 
+
+    private static class UnsafeHolder {
+        //public static sun.misc.Unsafe UNSAFE; // NOSONAR
+    }
     /**
      * A empty string
      */
     public static final String EMPTY_STRING = "";
 
-    static {
-        Field theUnsafe = null;
-        try {
-            theUnsafe = sun.misc.Unsafe.class.getDeclaredField("theUnsafe"); // NOSONAR
-            theUnsafe.setAccessible(true); // NOSONAR
-            UNSAFE = (sun.misc.Unsafe) theUnsafe.get(null);
-            byteBaseOffset = UNSAFE.arrayBaseOffset(byte[].class);
-            logger.info("byteArrayBaseOffset => {}", byteBaseOffset);
-        } catch (Exception e) {
-            logger.error(EMPTY_STRING, e);
-        }
+    /**
+     * Constructor
+     */
+    private ByteHelper() {
+        super();
     }
+
+
+
+//    static {
+//        Field theUnsafe = null;
+//        try {
+//            theUnsafe = sun.misc.Unsafe.class.getDeclaredField("theUnsafe"); // NOSONAR
+//            theUnsafe.setAccessible(true); // NOSONAR
+//            UnsafeHolder.UNSAFE = (sun.misc.Unsafe) theUnsafe.get(null);
+//            byteBaseOffset = UnsafeHolder.UNSAFE.arrayBaseOffset(byte[].class);
+//            logger.info("byteArrayBaseOffset => {}", byteBaseOffset);
+//        } catch (Exception e) {
+//            logger.error(EMPTY_STRING, e);
+//        }
+//    }
 
 
 
@@ -81,11 +92,12 @@ public class ByteHelper {
      */
     public static byte[] int2bytes2u(int number, int len) {
 
-        byte[] result = new byte[len];
-        for (int i = len - 1; i >= 0; i--) {
-            UNSAFE.putByte(result, byteBaseOffset + i, (byte) ((number >> ((len - 1 - i) * 8)) & 0xFF));
-        }
-        return result;
+//        byte[] result = new byte[len];
+//        for (int i = len - 1; i >= 0; i--) {
+//            UnsafeHolder.UNSAFE.putByte(result, byteBaseOffset + i, (byte) ((number >> ((len - 1 - i) * 8)) & 0xFF));
+//        }
+//        return result;
+        return int2bytes2s(number, len);
     }
 
 
@@ -155,26 +167,26 @@ public class ByteHelper {
     }
 
     static long bytes2long(byte[] bs) {
-        int bytes = bs.length;
-        if (bytes > 1) {
-            if ((bytes % 2) != 0 || bytes > 8) {
+        int bytesLength = bs.length;
+        if (bytesLength > 1) {
+            if ((bytesLength % 2) != 0 || bytesLength > 8) {
                 throw new UnsupportedOperationException("not support");
             }
         }
-        switch (bytes) {
+        switch (bytesLength) {
             case 0:
                 return 0;
             case 1:
-                return (long) ((bs[0] & 0xff));
+                return (bs[0] & 0xffL);
             case 2:
-                return (long) ((bs[0] & 0xff) << 8 | (bs[1] & 0xff));
+                return ((bs[0] & 0xffL) << 8 | (bs[1] & 0xff));
             case 4:
-                return (long) ((bs[0] & 0xffL) << 24 | (bs[1] & 0xffL) << 16 | (bs[2] & 0xffL) << 8 | (bs[3] & 0xffL));
+                return ((bs[0] & 0xffL) << 24 | (bs[1] & 0xffL) << 16 | (bs[2] & 0xffL) << 8 | (bs[3] & 0xffL));
             case 8:
-                return (long) ((bs[0] & 0xffL) << 56 | (bs[1] & 0xffL) << 48 | (bs[2] & 0xffL) << 40 | (bs[3] & 0xffL) << 32 |
+                return ((bs[0] & 0xffL) << 56 | (bs[1] & 0xffL) << 48 | (bs[2] & 0xffL) << 40 | (bs[3] & 0xffL) << 32 |
                         (bs[4] & 0xffL) << 24 | (bs[5] & 0xffL) << 16 | (bs[6] & 0xffL) << 8 | (bs[7] & 0xffL));
             default:
-                throw new UnsupportedOperationException("not support");
+                throw new UnsupportedOperationException("Not Supported, Your array's length is "+ bytesLength);
         }
 
     }
@@ -287,6 +299,23 @@ public class ByteHelper {
             }
         }
         return dataPacket;
+    }
+
+    public static String extractString(byte[] bytes, int offset, int length, Charset charset) {
+        if (bytes == null || bytes.length == 0) {
+            return EMPTY_STRING;
+        }
+
+        String u = new String(bytes, offset, length, charset);
+        StringBuilder sb =  new StringBuilder(length);
+        for (int i = 0; i < u.length(); i++) {
+            char c = u.charAt(i);
+            if (c == '\0') {
+                break;
+            }
+            sb.append(c);
+        }
+        return sb.toString();
     }
 
     /**

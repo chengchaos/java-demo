@@ -21,7 +21,7 @@ public class MockServerApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(MockServerApplication.class, args);
 
-        MockServer mockServer = ctx.getBean(MockServer.class);
+        MockServer mockServer = ctx.getBean("mockServer", MockServer.class);
         mockServer.start(60000);
     }
 }
