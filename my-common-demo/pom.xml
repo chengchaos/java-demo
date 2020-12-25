@@ -3,24 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
-
     <groupId>luxe.chaos.test</groupId>
-    <artifactId>my-dep-test1</artifactId>
+    <artifactId>my-common-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>my-dep-test1</name>
+    <name>my-common-demo</name>
     <description>Demo project for maven test</description>
-
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-
         <scala.version>2.13.3</scala.version>
-        
         <spring-boot.version>2.1.3.RELEASE</spring-boot.version>
-
         <!-- 开罗 -->
         <platform-bom.version>Cairo-SR5</platform-bom.version>
         <!-- 芬奇利 -->
@@ -40,28 +34,12 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        <repository>
-            <id>fma-repo</id>
-            <url>https://pts-tsp.accenture.cn/nexus/content/repositories/fma-repo</url>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
+
     </repositories>
 
 
 
     <dependencies>
-
-        <dependency>
-            <groupId>luxe.chaos.test</groupId>
-            <artifactId>my-dep-test1</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency
-
-
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
@@ -76,12 +54,11 @@
             <scope>test</scope>
         </dependency>
 
-
     </dependencies>
 
     <build>
 
-
+        <finalName>my-common-demo</finalName>
         <!-- To define the plugin version in your parent POM -->
         <pluginManagement>
             <!--
@@ -103,37 +80,6 @@
         <!-- To use the plugin goals in your POM or parent POM -->
         <plugins>
 
-
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-
-            </plugin>
-
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-shade-plugin</artifactId>-->
-<!--                <version>2.4.3</version>-->
-<!--                <configuration>-->
-<!--                    <createDependencyReducedPom>false</createDependencyReducedPom>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>package</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>shade</goal>-->
-<!--                        </goals>-->
-<!--                        <configuration>-->
-<!--                            <transformers>-->
-<!--                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-<!--                                    <mainClass>Main</mainClass>-->
-<!--                                </transformer>-->
-<!--                            </transformers>-->
-<!--                        </configuration>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -152,33 +98,6 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
-
-            <!-- 用来创建超级JAR包的Maven shade插件 -->
-            <!-- http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html -->
-            <!--
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <transformers>
-                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>com.example.myscala002.DemoApplication</mainClass>
-                                </transformer>
-                            </transformers>
-                        </configuration>
-
-                    </execution>
-                </executions>
-            </plugin>
-            -->
 
         </plugins>
     </build>
