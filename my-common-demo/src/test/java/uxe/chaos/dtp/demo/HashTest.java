@@ -1,5 +1,6 @@
 package uxe.chaos.dtp.demo;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,5 +24,6 @@ public class HashTest {
             int s = left & i;
             LOGGER.info("i = {}, v => {}", i, s);
         }
+        Assert.assertTrue("why", true);
     }
 }
