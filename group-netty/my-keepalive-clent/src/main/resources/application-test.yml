@@ -1,0 +1,13 @@
+
+spring:
+  profiles: test
+
+server:
+  port: 20031
+
+project:
+  auto-start:
+    netty: false
+    kafka: false
+  netty:
+    port: 9999

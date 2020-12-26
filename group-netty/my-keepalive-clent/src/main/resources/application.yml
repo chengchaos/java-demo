@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: test
+  application:
+    name: keepalive-client
+#logging:
+#  level: info
+#  path: logs/
+#  file: logs/listener-netty.log
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+#  type-aliases-package: cn.futuremove.activelink.bussiness.entity
+server:
+  port: 10031 # web 监听端口
+  servlet:
+    context-path: /keepalive-client
+
+project:
+  auto-start:
+    netty: true
+    kafka: true
+  netty:
+    port: 9999

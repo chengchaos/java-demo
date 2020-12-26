@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="DEBUG" >
+
+    <Properties>
+<!--        <Property name="PID">????</Property>-->
+<!--        <Property name="LOG_EXCEPTION_CONVERSION_WORD">%xwEx</Property>-->
+<!--        <Property name="LOG_LEVEL_PATTERN">%5p</Property>-->
+<!--        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{-&#45;&#45;}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>-->
+<!--        <Property name="FILE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN} ${sys:PID} -&#45;&#45; [%t] %-40.40c{1.} : %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>-->
+<!--        <Property name="Server_Log_Path">target/logs/</Property>-->
+<!--        <Property name="Netty_Log_Path">target/logs/</Property>-->
+    </Properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+<!--            <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}" />   %style{%c{6}}{cyan}  -->
+            <PatternLayout disableAnsi="false" noConsoleNoAnsi="false"
+                           pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %highlight{%-5level} %style{%C{2}}{cyan} L:%L => %msg%n"/>
+        </Console>
+
+        <RollingFile name="RootFile" fileName="target/logs/listener-server.log"
+                     filePattern="target/logs/activeLink-server-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout >
+                <Pattern>"%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="128 MB" />
+                <!-- DefaultRolloverStrategy 属性如不设置，则默认为最多同一文件夹下 7 个文件 -->
+                <DefaultRolloverStrategy max="20"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="NettyFile" fileName="target/logs/activeLink-netty.log"
+                     filePattern="target/logs/activeLink-netty-%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout>
+                <Pattern>"%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n"</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="128 MB" />
+                <!-- DefaultRolloverStrategy 属性如不设置，则默认为最多同一文件夹下 7 个文件 -->
+                <DefaultRolloverStrategy max="20"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+<!--        <Logger name="org.apache.catalina.util.LifecycleBase" level="warn" />-->
+<!--        <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />-->
+<!--        <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />-->
+<!--        <Logger name="org.hibernate.validator.internal.util.Version" level="warn" />-->
+<!--        <logger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration" level="warn"/>-->
+<!--        <logger name="org.springframework.boot.actuate.endpoint.jmx" level="warn"/>-->
+<!--        <logger name="org.thymeleaf" level="warn"/>-->
+
+        <logger name="org.springframework.kafka" level="WARN" />
+        <logger name="io.netty.util.internal" level="INFO" />
+        <logger name="cn.futuremove.activelink.listener.netty.services" level="DEBUG" />
+        <!-- 我们自己的 Kafka Producer -->
+        <logger name="cn.futuremove.activelink.gbpacket.mq.producer" level="WARN" />
+        <logger name="cn.futuremove.activelink.gbpacket" level="debug">
+            <AppenderRef ref="NettyFile"/>
+        </logger>
+
+        <logger name="cn.futuremove.activelink.listener.netty" level="debug">
+            <AppenderRef ref="NettyFile"/>
+        </logger>
+
+        <Root level="INFO">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RootFile" />
+        </Root>
+    </Loggers>
+
+</Configuration>
