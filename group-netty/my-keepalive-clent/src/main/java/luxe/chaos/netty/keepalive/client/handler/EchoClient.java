@@ -8,13 +8,9 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-import org.apache.catalina.Pipeline;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 
 /**
@@ -27,7 +23,7 @@ import java.net.InetSocketAddress;
  *
  * @author Cheng, Chao - 12/16/2020 5:05 PM <br />
  */
-@Component
+
 public class EchoClient {
 
     private static final Logger logger = LoggerFactory.getLogger(EchoClient.class);
@@ -35,15 +31,21 @@ public class EchoClient {
     private static final StringDecoder stringDecoder = new StringDecoder();
     private static final StringEncoder stringEncoder = new StringEncoder();
 
-    @Autowired
+
     private EchoClientHandler echoHandler;
 
+    public EchoClient(EchoClientHandler echoHandler) {
+        this.echoHandler = echoHandler;
+    }
+
     private NioEventLoopGroup workers;
+    private int port;
 
     private int state = 0;
 
 
     public void connect(int port) {
+        this.port = port;
 
         workers = new NioEventLoopGroup();
 
@@ -77,5 +79,10 @@ public class EchoClient {
     public void close() {
         this.workers.shutdownGracefully();
         this.state = 0;
+    }
+
+    public void reconnect() {
+        this.close();
+        this.connect(this.port);
     }
 }

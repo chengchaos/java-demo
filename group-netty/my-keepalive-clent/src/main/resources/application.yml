@@ -12,9 +12,8 @@ spring:
 #  type-aliases-package: cn.futuremove.activelink.bussiness.entity
 server:
   port: 10031 # web 监听端口
-  context-path: /kc
   servlet:
-    context-path: /kc
+    context-path: /keepalive-client
 
 project:
   auto-start:

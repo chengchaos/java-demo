@@ -1,6 +1,8 @@
 package luxe.chaos.netty.keepalive.client;
 
+import luxe.chaos.netty.keepalive.client.business.DataManager;
 import luxe.chaos.netty.keepalive.client.handler.EchoClient;
+import luxe.chaos.netty.keepalive.client.handler.EchoClientHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -21,7 +23,8 @@ public class ClientApp {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext ctx = SpringApplication.run(ClientApp.class, args);
-        EchoClient echoClient = ctx.getBean(EchoClient.class);
-        echoClient.connect(9999);
+        DataManager dataManager = ctx.getBean(DataManager.class);
+        dataManager.connect();
+
     }
 }
