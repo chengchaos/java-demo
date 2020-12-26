@@ -1,4 +1,4 @@
-package luxe.chaos.unsafe;
+package luxe.chaos.helper.unsafe;
 
 import com.google.common.base.Stopwatch;
 import io.netty.buffer.ByteBufUtil;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
-import static luxe.chaos.unsafe.Bytes.*;
+import static luxe.chaos.helper.unsafe.Bytes.*;
 
 /**
  * <p>
@@ -24,8 +24,6 @@ import static luxe.chaos.unsafe.Bytes.*;
  * </p>
  *
  * @author Cheng, Chao - 11/30/2020 2:10 PM <br />
- * @see [相关类方法]
- * @since [产品模块版本]
  */
 public class UnsafeTest {
 

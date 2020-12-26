@@ -1,11 +1,9 @@
-package luxe.chaos.unsafe;
+package luxe.chaos.helper.unsafe;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
-import java.nio.ByteBuffer;
-import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -16,8 +14,7 @@ import java.util.concurrent.TimeUnit;
  * </p>
  *
  * @author Cheng, Chao - 11/30/2020 2:49 PM <br />
- * @see [相关类方法]
- * @since [产品模块版本]
+ * @since 1.0
  */
 public class Bytes {
 
@@ -37,9 +34,8 @@ public class Bytes {
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     static {
-        Field theUnsafe = null;
         try {
-            theUnsafe = sun.misc.Unsafe.class.getDeclaredField("theUnsafe"); // NOSONAR
+            Field theUnsafe = sun.misc.Unsafe.class.getDeclaredField("theUnsafe"); // NOSONAR
             theUnsafe.setAccessible(true); // NOSONAR
             UNSAFE = (sun.misc.Unsafe) theUnsafe.get(null);
             byteBaseOffset = UNSAFE.arrayBaseOffset(byte[].class);
@@ -60,11 +56,20 @@ public class Bytes {
     }
 
 
+    /**
+     * Convert a int to byte[] <br />
+     * use UNSAFE execute
+     * @param number
+     * @param len
+     * @return
+     */
     public static byte[] int2bytes2u(int number, int len) {
 
         byte[] result = new byte[len];
         for (int i = len - 1; i >= 0; i--) {
-            UNSAFE.putByte(result, byteBaseOffset + i, (byte) ((number >> ((len - 1 - i) * 8)) & 0xFF));
+            UNSAFE.putByte(result,
+                    byteBaseOffset + i,
+                    (byte) ((number >> ((len - 1 - i) * 8)) & 0xFF));
         }
         return result;
     }
@@ -161,6 +166,7 @@ public class Bytes {
 
 
     public static byte[] long2byteArray(long number) {
+
         byte[] result = new byte[8];
         result[0] = (byte) ((number >> 56) & 0xFFL);
         result[1] = (byte) ((number >> 48) & 0xFFL);
