@@ -62,13 +62,10 @@
             <AppenderRef ref="NettyFile"/>
         </logger>
 
-        <logger name="cn.futuremove.activelink.listener.netty" level="debug">
-            <AppenderRef ref="NettyFile"/>
-        </logger>
+        <logger name="luxe.chaos.netty.keepalive.client" level="debug" />
 
         <Root level="INFO">
             <AppenderRef ref="Console" />
-            <AppenderRef ref="RootFile" />
         </Root>
     </Loggers>
 
