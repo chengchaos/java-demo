@@ -1,7 +1,10 @@
 
 spring:
-  profiles: test
-
+  profiles: local_dev
+#热部署生效
+  devtools:
+    restart:
+      enabled: true
 server:
   port: 10080 # web 监听端口
   servlet:

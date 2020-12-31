@@ -89,6 +89,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+        </dependency>
+
         <!-- netty 依赖 -->
         <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
         <dependency>
@@ -139,6 +144,12 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -154,7 +165,7 @@
 
     <build>
 
-
+        <finalName>mock-gb-server</finalName>
         <!-- To define the plugin version in your parent POM -->
         <pluginManagement>
             <!--
@@ -240,6 +251,41 @@
             </plugin>
 
 
+            <!-- 资源 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <id>default-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/classes</outputDirectory>
+                            <useDefaultDelimiters>false</useDefaultDelimiters>
+                            <delimiters>
+                                <delimiter>@*@</delimiter>
+                            </delimiters>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/resources/</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>**/*.yml</include>
+                                        <include>**/*.properties</include>
+                                        <include>**/*.xml</include>
+                                        <include>banner.txt</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- 用来创建超级JAR包的Maven shade插件 -->
             <!-- http://maven.apache.org/plugins/maven-shade-plugin/examples/resource-transformers.html -->
             <!--
@@ -267,12 +313,34 @@
             -->
 
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <profiles>
         <profile>
+            <id>local_dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <project.env>local_dev</project.env>
+                <netty.version>4.1.56.Final</netty.version>
+            </properties>
+        </profile>
+
+        <profile>
             <id>freebsd</id>
 
+            <properties>
+                <project.env>freebsd</project.env>
+                <netty.version>4.1.56.Final</netty.version>
+            </properties>
             <dependencies>
                 <!-- https://mvnrepository.com/artifact/io.netty/netty-transport-native-kqueue -->
                 <dependency>
@@ -283,10 +351,13 @@
                 </dependency>
             </dependencies>
         </profile>
+
         <profile>
-            <id>linux</id>
+            <id>linux_test</id>
             <properties>
+                <project.env>linux_test</project.env>
                 <netty.version>4.1.56.Final</netty.version>
+                <log.root_dir>logs</log.root_dir>
             </properties>
             <dependencies>
                 <!-- https://www.jianshu.com/p/61df929aa98b -->
@@ -299,5 +370,7 @@
                 </dependency>
             </dependencies>
         </profile>
+
+
     </profiles>
 </project>

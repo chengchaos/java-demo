@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="DEBUG">
+<Configuration status="INFO" >
 
     <Properties>
         <Property name="PID">????</Property>
     </Properties>
+
+    <!-- "%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %highlight{%-5level} %style{%C{2}#%M}{cyan}:%L => %msg%n" -->
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">
             <PatternLayout disableAnsi="false" noConsoleNoAnsi="false"
-                           pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %highlight{%-5level} %style{%C{2}}{cyan} L:%L => %msg%n"/>
+                           pattern="%d{HH:mm:ss.SSS} %highlight{%-5level} %style{%C{2.}}{cyan} (%F:%L) => %X{first} %msg [%t]%n"/>
+            <Filters>
+                <!-- 如果日志事件 LogEvent 中有 test_marker  标记，则直接拒绝 DENY 这个日志事件 -->
+                <MarkerFilter marker="test_marker" onMatch="ACCEPT" onMismatch="NEUTRAL"/>
+                <!-- 如果日志事件 LogEvent 中的日志等级为 ${level} 及以上，则接受 ACCEPT 这个日志事件-->
+                <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
         </Console>
 
     </Appenders>
 
     <Loggers>
-        <logger name="org.springframework.kafka" level="WARN"/>
-        <logger name="io.netty.util.internal" level="INFO"/>
-        <logger name="luxe.chaos.netty.mock.gb" level="DEBUG"/>
+
+        <logger name="luxe.chaos.netty" level="debug" additivity="true" />
+
         <Root level="INFO">
-            <AppenderRef ref="Console"/>
+            <AppenderRef ref="Console" />
         </Root>
     </Loggers>
 

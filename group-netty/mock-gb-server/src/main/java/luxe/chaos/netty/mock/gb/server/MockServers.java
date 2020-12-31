@@ -51,7 +51,6 @@ public class MockServers {
 
     public static ServerBootstrap allocateChannel(ServerBootstrap sb) {
 
-
         sb.option(ChannelOption.SO_RCVBUF, 1024 * BUFFER_SIZE);
         sb.option(ChannelOption.SO_REUSEADDR, true);
         sb.option(ChannelOption.SO_BACKLOG, 1024);

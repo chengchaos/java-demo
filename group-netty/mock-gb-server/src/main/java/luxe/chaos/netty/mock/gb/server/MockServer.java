@@ -1,15 +1,19 @@
 package luxe.chaos.netty.mock.gb.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
-import luxe.chaos.netty.mock.gb.handlers.*;
+import luxe.chaos.netty.mock.gb.handlers.Handlers;
+import luxe.chaos.netty.mock.gb.handlers.PacketDecoder;
+import luxe.chaos.netty.mock.gb.handlers.PacketEncoder;
+import luxe.chaos.netty.mock.gb.handlers.ResponseHandler;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.InetSocketAddress;
-import java.util.Arrays;
 
 /**
  * <p>

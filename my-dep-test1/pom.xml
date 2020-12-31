@@ -63,8 +63,6 @@
             <version>1.7.25</version>
         </dependency>
 
-
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -95,6 +93,7 @@
     </dependencies>
 
     <build>
+        <finalName>my-dep-test1</finalName>
         <!-- To define the plugin version in your parent POM -->
         <pluginManagement>
             <!--

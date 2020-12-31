@@ -21,7 +21,7 @@ public class ByteHelper {
 
 
     private static class UnsafeHolder {
-        //public static sun.misc.Unsafe UNSAFE; // NOSONAR
+        public static sun.misc.Unsafe UNSAFE; // NOSONAR
     }
     /**
      * A empty string
@@ -35,20 +35,18 @@ public class ByteHelper {
         super();
     }
 
-
-
-//    static {
-//        Field theUnsafe = null;
-//        try {
-//            theUnsafe = sun.misc.Unsafe.class.getDeclaredField("theUnsafe"); // NOSONAR
-//            theUnsafe.setAccessible(true); // NOSONAR
-//            UnsafeHolder.UNSAFE = (sun.misc.Unsafe) theUnsafe.get(null);
-//            byteBaseOffset = UnsafeHolder.UNSAFE.arrayBaseOffset(byte[].class);
-//            logger.info("byteArrayBaseOffset => {}", byteBaseOffset);
-//        } catch (Exception e) {
-//            logger.error(EMPTY_STRING, e);
-//        }
-//    }
+    static {
+        Field theUnsafe = null;
+        try {
+            theUnsafe = sun.misc.Unsafe.class.getDeclaredField("theUnsafe"); // NOSONAR
+            theUnsafe.setAccessible(true); // NOSONAR
+            UnsafeHolder.UNSAFE = (sun.misc.Unsafe) theUnsafe.get(null);
+            byteBaseOffset = UnsafeHolder.UNSAFE.arrayBaseOffset(byte[].class);
+            logger.info("byteArrayBaseOffset => {}", byteBaseOffset);
+        } catch (Exception e) {
+            logger.error(EMPTY_STRING, e);
+        }
+    }
 
 
 
