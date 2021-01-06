@@ -1,0 +1,36 @@
+
+
+server:
+  port: 18080
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    consul:
+      host: 192.168.56.102
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        health-check-interval: 20s # 默认是 10s
+        tags: ${server.port}, test
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      enabled: true
+      routes:
+        - id: ribbon-server-1
+          uri: lb://ribbon-server-1
+          predicates:
+            - Path=/ribbon-server-1/**
+          filters:
+            - StripPrefix=1
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  security:
+    enabled: false
+

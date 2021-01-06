@@ -1,0 +1,11 @@
+spring:
+  application:
+    admin:
+      enabled: true
+  profiles:
+    active: @profile.active@
+
+server:
+  servlet:
+    context-path: /tc
+  port: 8080

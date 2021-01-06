@@ -7,9 +7,9 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-//@EnableDiscoveryClient
-//@EnableFeignClients(basePackages = "cn.springcloud.book.ch2.feign.service")
-//@EnableHystrix
+@EnableDiscoveryClient
+@EnableFeignClients(basePackages = "cn.springcloud.book.feign")
+@EnableHystrix
 public class RibbonServer1Application {
 
     public static void main(String[] args) {

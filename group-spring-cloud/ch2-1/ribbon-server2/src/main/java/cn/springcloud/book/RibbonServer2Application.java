@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = "cn.springcloud.book.ch2.feign.service")
+//@EnableFeignClients(basePackages = "cn.springcloud.book.ch2.feign.service")
 public class RibbonServer2Application {
 
     public static void main(String[] args) {

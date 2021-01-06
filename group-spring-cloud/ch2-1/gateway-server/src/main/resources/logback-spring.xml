@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="false" scanPeriod="120 seconds">
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} + %highlight(%-5level) %cyan(%logger{1.}) -line %L - %msg - [%t]%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR" additivity="false"/>
+    <logger name="org.apache.catalina.util.LifecycleBase" level="ERROR" additivity="false"/>
+    <logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN" additivity="false"/>
+    <logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN" additivity="false"/>
+    <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN" additivity="false"/>
+    <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR" additivity="false"/>
+    <logger name="org.hibernate.validator.internal.util.Version" level="WARN" additivity="false"/>
+
+    <root level="${logLevel:-INFO}">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>

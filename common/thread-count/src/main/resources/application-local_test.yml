@@ -1,0 +1,12 @@
+spring:
+  application:
+    admin:
+      enabled: true
+  config:
+    activate:
+      on-profile: local_test
+
+server:
+  servlet:
+    context-path: /tc
+  port: 8080

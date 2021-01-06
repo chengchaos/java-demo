@@ -1,13 +1,22 @@
-package cn.springcloud.book.ch13.controller;
+package cn.springcloud.book.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-import java.util.Map;
-
+/**
+ * <p>
+ * <strong>
+ * 用一句话描述功能
+ * </strong><br /><br />
+ * As the title said.
+ * </p>
+ *
+ * @author Cheng, Chao - 1/4/2021 5:53 PM <br />
+ * @see [相关类]
+ * @since 1.0
+ */
 @RestController
 public class MyActuator {
 
@@ -15,7 +24,6 @@ public class MyActuator {
 
     public MyActuator() {
         super();
-        LOGGER.info("+++++++++++++++++++++ My Acturator");
     }
 
     @GetMapping(value = "/actuator/health")
@@ -23,10 +31,5 @@ public class MyActuator {
 
         return "SUCCESS";
 
-    }
-
-    @GetMapping(value = "/ch13/say-hai")
-    public Map<String, Object> sayHai() {
-        return Collections.singletonMap("message", "嗨 .. Consul");
     }
 }
