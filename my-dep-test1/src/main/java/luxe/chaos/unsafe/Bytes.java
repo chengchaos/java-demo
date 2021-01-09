@@ -18,6 +18,7 @@ import java.lang.reflect.Field;
 public class Bytes {
 
     private static final Logger logger = LoggerFactory.getLogger(Bytes.class);
+
     private static long byteBaseOffset;
     private static sun.misc.Unsafe UNSAFE; // NOSONAR
 
@@ -32,6 +33,9 @@ public class Bytes {
      */
     public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
+    /**
+     * Constructor
+     */
     private Bytes() {
         super();
     }
