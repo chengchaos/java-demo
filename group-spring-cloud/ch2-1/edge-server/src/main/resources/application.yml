@@ -4,26 +4,30 @@
 server:
   port: 8081
 
-#eureka:
-#  client:
-#    serviceUrl:
-#      defaultZone: http://localhost:8761/eureka/
-
-feign:
-  hystrix:
-    enabled: true
-
 spring:
   application:
-    name: edge-server
+    name: edge_server
+  profiles:
+    active: @project.env@
   cloud:
-    consul:
-      host: 127.0.0.1
-      port: 8500
+#    consul:
+#      host: 192.168.56.102
+#      port: 8500
+#      discovery:
+#        prefer-ip-address: true
+#        health-check-interval: 20s # 默认是 10s
+#        tags: ${server.port}, test
+    loadbalancer:
+      ribbon:
+        enabled: false
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
 
 
-  logging:
-    level:
-      root: INFO
-    path: ./target
-    file: edge-server.log
+project:
+  config:
+    inspect-on-start: true

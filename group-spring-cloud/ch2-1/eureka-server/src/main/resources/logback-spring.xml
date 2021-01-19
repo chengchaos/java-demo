@@ -5,7 +5,7 @@
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
 
-    <property name="LOG_FILE" value="target/logs/eureka-server"/>
+    <property name="LOG_FILE" value="logs/eureka-server"/>
     <property name="CONSOLE_LOG_PATTERN"
               value="${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
     <property name="FILE_LOG_PATTERN"
@@ -14,6 +14,7 @@
 
     <appender name="ROLLING_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
+<!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %-5level %logger{1} -line %L - %msg [%t]%n</pattern>-->
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %-5level %logger{1} -line %L - %msg [%t]%n</pattern>
         </encoder>
         <file>${LOG_FILE}.log</file>
@@ -27,7 +28,8 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} + %highlight(%-5level) %cyan(%logger{1.}) -line %L - %msg - [%t]%n</pattern>
+<!--            <pattern>%d{HH:mm:ss.SSS} + %highlight(%-5level) %cyan(%logger{1.}) -line %L - %msg - [%t]%n</pattern>-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %-5level %logger{1} -line %L - %msg [%t]%n</pattern>
         </encoder>
     </appender>
 
@@ -40,20 +42,11 @@
     <logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN" additivity="false"/>
     <logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR" additivity="false"/>
     <logger name="org.hibernate.validator.internal.util.Version" level="WARN" additivity="false"/>
-    <logger name="com.sinogold.activelink" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE" />
-    </logger>
-
-    <logger name="io.netty.handler.logging" level="DEBUG" additivity="false" />
 
     <logger name="cn.futuremove.tsp.tbox.service.KafkaService" level="INFO" additivity="false" />
 
-    <logger name="cn.futuremove.tsp.tbox" level="DEBUG" additivity="false">
-        <appender-ref ref="CONSOLE" />
-    </logger>
-
     <root level="${logLevel:-INFO}">
         <appender-ref ref="CONSOLE" />
-        <appender-ref ref="ROLLING_FILE" />
+<!--        <appender-ref ref="ROLLING_FILE" />-->
     </root>
 </configuration>

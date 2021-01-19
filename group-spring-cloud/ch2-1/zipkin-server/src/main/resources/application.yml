@@ -1,0 +1,110 @@
+
+
+####
+server:
+  port: 9411
+
+spring:
+  application:
+    name: zipkin_server
+  cloud:
+    consul:
+      host: 192.168.56.102
+      port: 8500
+      discovery:
+        prefer-ip-address: true
+        health-check-interval: 20s # 默认是 10s
+        tags: ${server.port}, test
+    loadbalancer:
+      ribbon:
+        enabled: false     # 先关闭
+  data:
+    mongodb:
+      authentication-database: admin   # 鉴权数据库
+      database: chengchao              # 数据库名称
+#      field-naming-strategy:           # 使用字段名策略
+#      grid-fs-database:                # GridFs 数据库名称
+      host: 192.168.56.102             # 服务器，不能设置为 URI
+      username: chengchao
+      password: Hello-World!
+      port: 27017
+      repositories:
+        type: auto                     # 是否启用关于 JPA 规范编程
+#      uri: mongodb://192.168.56.102:27017/chengchao  # URI 和 host 不能同时指定。
+  redis:
+    jedis:
+      pool:
+        min-idle: 5       # default: 0
+        max-active: 8     # default: 8
+        max-wait: 2000    # default: -1
+        max-idle: 8       # default: 8
+    host: 192.168.56.102
+    port: 6379
+    password: foobared
+    timeout: 1000
+  devtools:
+    add-properties: false
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: basic
+      ribbon-server-2:
+        connectTimeout: 3000 # 连接超时时间
+        readTimeout: 3000    # 读超时时间
+        loggerLevel: full    #
+#        errorDecocer: cn.springcloud.book.feign.SimpleErrorDecoder
+#        retryer: cn.springcloud.book.feign.SimpleRetryer
+#        requeestInterceptors:
+#          - cn.springcloud.book.feign.FooRequestInterceptor
+#        decode404: false
+#        encoder: cn.springcloud.book.feign.SimpleEncoder
+#        decoder: cn.springcloud.book.feign.SimpleDecoder
+#        contract: cn.springcloud.book.feign.SimpleContract
+  compression: # Feign 开启 Gzip 压缩
+    request:
+      enabled: true
+      mime-types: text/plain,text/xml,application/json #
+      min-request-size: 1
+    response:
+      enabled: true
+  hystrix:
+    enabled: true    # Fallback 是通过 Hystrix 实现的，使用 Fallback 需要开启这个。 Fallback 要使用 @Component 管理。
+
+
+ribbon:
+  ReadTimeout: 1000                # 请求处理超时时间，默认 5000
+  ConnectTimeout: 2000             # 请求连接超时时间，默认 2000
+  MaxAutoRetries: 0                # 对当前实例的重试次数，默认 0
+  MaxAutoRetriesNextServer: 0      # 对切换实例的重试次数，默认 1
+  OkToRetryOnAllOperations: false  # 对所有操作请求都进行重试， 默认 false
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 10   # 隔离策略为线程时， 线程核心大小，默认 10
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: THREAD               # 隔离策略， 默认 THREAD
+          thread:
+            timeoutInMilliseconds: 5000  # 默认是 1000
+            interruptOnTimeout: true     # 超时是否终端执行， 默认 true
+        timeout:
+          enabled: true                 # hystrixCommand 命令执行是否开启超时，默认 true
+
+## Actuator ###
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        exclude: env

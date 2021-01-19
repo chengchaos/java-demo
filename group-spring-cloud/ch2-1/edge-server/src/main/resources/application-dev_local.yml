@@ -1,0 +1,30 @@
+
+
+####
+server:
+  port: 8081
+
+spring:
+  profiles: dev_local
+  cloud:
+#    consul:
+#      host: 192.168.56.102
+#      port: 8500
+#      discovery:
+#        prefer-ip-address: true
+#        health-check-interval: 20s # 默认是 10s
+#        tags: ${server.port}, test
+    loadbalancer:
+      ribbon:
+        enabled: false
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+
+project:
+  config:
+    inspect-on-start: false

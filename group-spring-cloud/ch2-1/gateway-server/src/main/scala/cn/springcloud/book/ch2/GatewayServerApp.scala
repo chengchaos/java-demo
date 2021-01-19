@@ -19,8 +19,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 @SpringBootApplication
 @EnableDiscoveryClient
 class GatewayServerApp
+
 object GatewayServerApp {
-  def main(args: Array[String]): Unit = {
-    SpringApplication.run(classOf[GatewayServerApp], args:_*)
-  }
+  def main(args: Array[String]): Unit =
+    SpringApplication.run(classOf[GatewayServerApp], args: _*)
 }
