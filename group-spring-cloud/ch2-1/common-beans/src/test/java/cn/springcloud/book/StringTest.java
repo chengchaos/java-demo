@@ -1,9 +1,11 @@
-package cn.springcloud.book.service.impl;
+package cn.springcloud.book;
 
+import com.google.common.base.Stopwatch;
 import org.junit.Test;
-import scala.math.Equiv;
 
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -15,11 +17,10 @@ import java.util.Arrays;
  * 看这里： <br />
  * https://www.nowcoder.com/practice/4fe306a84f084c249e4afad5edf889cc?tpId=196&&tqId=37187&rp=1&ru=/activity/oj&qru=/ta/job-code-total/question-ranking
  *
- * @author Cheng, Chao - 1/19/2021 12:19 PM <br />
+ * @author Cheng, Chao - 1/28/2021 10:07 AM <br />
  * @since 1.0
  */
 public class StringTest {
-
     @Test
     public void parseTest() {
         String a = "abccabc";
@@ -128,6 +129,37 @@ public class StringTest {
         a = "aaaaaaaaaa";
         x = solve2(a);
         System.out.println("x = " + x);
+
+        char[] arr = new char[1000];
+        Arrays.fill(arr, 'x');
+
+        x = solve2(new String(arr));
+        System.out.println("x = " + x);
+
+        ThreadLocalRandom r = ThreadLocalRandom.current();
+        for (int i = 0; i < arr.length; i++) {
+            int b = r.nextInt(57);
+            b += 65;
+            arr[i] = (char)b;
+        }
+        Stopwatch stopwatch = Stopwatch.createStarted();
+        x = solve2(new String(arr));
+        stopwatch.stop();
+        long elapsedMillis = stopwatch.elapsed(TimeUnit.MILLISECONDS);
+        System.out.printf("result = %d, time = %d 毫秒", x, elapsedMillis);
+
+
+    }
+
+    @Test
+    public void testChar() {
+
+        System.out.println((int)'a');
+        System.out.println((int)'A');
+        System.out.println((int)'z');
+        System.out.println((int)'Z');
+
+        System.out.println((int)'z' - (int)'A');
     }
 
 
@@ -136,24 +168,22 @@ public class StringTest {
         if (len <= 1) {
             return 0;
         }
-        int half = a.length() / 2;
-        char[] arrays = a.toCharArray();
-        System.out.println(a + " => len = " + len + ", half = " + half);
+//        char[] arrays = a.toCharArray();
+//        System.out.println(a + " => len = " + len + ", half = " + half);
 
-        int max = 0;
-        for (int i = half; i >= 1; i--) {
-            for (int j = 0; j + i <= len; j++) {
-                for (int k = j + i; k + i <= len; k++) {
+        int max =  a.length() / 2;
+        for (; max >= 1; max--) {
+            for (int j = 0; j + max <= len; j++) {
+                for (int k = j + max; k + max <= len; k++) {
 //                    System.out.println(" i = " + i + ", j = " + j + ", k = " + k);
-                    if (match(arrays, j, k, i)) {
-                        max = i;
+                    if (match(a, j, k, max)) {
                         return max * 2;
                     }
                 }
             }
         }
 
-        return max;
+        return 0;
     }
 
 
@@ -168,12 +198,12 @@ public class StringTest {
         System.out.println(left + " => " + right);
     }
 
-    private boolean match(char[] charArray, int firstBegin, int secondBegin, int len) {
+    private boolean match(String text, int firstBegin, int secondBegin, int len) {
 
-//        this.log(charArray, firstBegin, secondBegin, len);
+//        this.log(text, firstBegin, secondBegin, len);
 
         for (int i = 0; i < len; i++) {
-            if (charArray[i + firstBegin] != charArray[i + secondBegin]) {
+            if (text.charAt(i + firstBegin) != text.charAt(i + secondBegin)) {
                 return false;
             }
         }
