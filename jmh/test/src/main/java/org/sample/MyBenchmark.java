@@ -27,11 +27,19 @@ package org.sample;
 
 import org.openjdk.jmh.annotations.Benchmark;
 
+import java.util.concurrent.TimeUnit;
+
 public class MyBenchmark {
 
     @Benchmark
     public void testMethod() {
         // place your benchmarked code here
+
+        try {
+            TimeUnit.SECONDS.sleep(1L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

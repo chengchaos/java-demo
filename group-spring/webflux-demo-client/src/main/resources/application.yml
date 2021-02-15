@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: webflux-demo2
+
+
+server:
+  port: 9999
+logging:
+  level:
+    luxe.chaos: debug
+    root: info
+

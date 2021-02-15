@@ -1,0 +1,27 @@
+
+spring:
+  application:
+    name: spring-boot-demo
+  devtools:
+    livereload:
+      enabled: false
+    add-properties: false
+
+server:
+  port: 8848
+  tomcat:
+    max-connections: 10240
+    threads:
+      max: 2000
+  undertow:
+    threads:
+      io: 12
+      worker: 512
+#    buffer-size: 1024
+    direct-buffers: true
+  servlet:
+    context-path: /demo
+logging:
+  level:
+    root: info
+    luxe.chaos.springboot.demo: debug

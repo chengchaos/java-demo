@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: webflux-demo2
+  data:
+    mongodb:
+      uri: mongodb://127.0.0.1:27017/chengchao
+
+server:
+  port: 8888
+logging:
+  level:
+    luxe.chaos: debug
+    root: info
+
