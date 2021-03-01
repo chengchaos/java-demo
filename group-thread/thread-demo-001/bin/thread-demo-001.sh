@@ -54,7 +54,6 @@ case $COMMAND in
 esac
 
 # $EXTRA_ARGS 这个变量不能用引号包起来，否则将会作为一个参数传递给后面的脚本。
-# echo exec "${base_dir}"/jar-runner.sh $EXTRA_ARGS "${@}"
-echo "${base_dir}"/jar-runner.sh $EXTRA_ARGS "${@}"
-# exec "${base_dir}"/jar-runner.sh $EXTRA_ARGS "${@}"
+# echo "exec ${base_dir}/jar-runner.sh" $EXTRA_ARGS "${@}"
+exec "${base_dir}/jar-runner.sh" $EXTRA_ARGS "${@}"
 
