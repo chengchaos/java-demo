@@ -33,8 +33,8 @@ else
 fi
 
 # Memory options
-if [ -z "${JAR_RUNNER_HEAP_OPTS}" ]; then
-  JAR_RUNNER_HEAP_OPTS="-Xmx256M"
+if [ -z "${JAR_RUN_HEAP_OPTS}" ]; then
+  JAR_RUN_HEAP_OPTS="-Xmx256M"
 fi
 
 # JVM performance options
@@ -44,21 +44,22 @@ fi
 
 DAEMON_MODE="false"
 GC_LOG_ENABLED="false"
-CONSOLE_OUTPUT_FILE=$LOG_DIR/no_daemon_name.out
+CONSOLE_OUTPUT_FILE=/dev/null
 
 while [ $# -gt 0 ]; do
   COMMAND=$1
   case $COMMAND in
-    -name)
-      DAEMON_NAME=$2
-      CONSOLE_OUTPUT_FILE=$LOG_DIR/$DAEMON_NAME.out
+    -logout)
+      console_log=$2
+      CONSOLE_OUTPUT_FILE=$LOG_DIR/${console_log}.out
       shift 2
       ;;
     -loggc)
       if [ -z "$PROJ_GC_LOG_OPTS" ]; then
         GC_LOG_ENABLED="true"
+        gc_log=$2
       fi
-      shift
+      shift 2
       ;;
     -daemon)
       DAEMON_MODE="true"
@@ -75,7 +76,7 @@ done
 GC_FILE_SUFFIX='-gc.log'
 GC_LOG_FILE_NAME=''
 if [ "x$GC_LOG_ENABLED" = "xtrue" ]; then
-  GC_LOG_FILE_NAME=$DAEMON_NAME$GC_FILE_SUFFIX
+  GC_LOG_FILE_NAME=${gc_log}$GC_FILE_SUFFIX
 
   # The first segment of the version number, which is '1' for releases before Java 9
   # it then becomes '9', '10', ...
@@ -96,9 +97,9 @@ fi
 
 # Launch mode
 if [ "is_$DAEMON_MODE" = "is_true" ]; then
-  # echo "nohup $JAVA $JAR_RUNNER_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS -cp $CLASSPATH $PROJ_OPTS " "$@" " > $CONSOLE_OUTPUT_FILE 2>&1 < /dev/null & "
-  nohup $JAVA $JAR_RUNNER_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS -cp $CLASSPATH $PROJ_OPTS "$@" > $CONSOLE_OUTPUT_FILE 2>&1 < /dev/null &
+  echo "nohup $JAVA $JAR_RUN_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS -cp $CLASSPATH $PROJ_OPTS " "$@" " > $CONSOLE_OUTPUT_FILE 2>&1 < /dev/null & "
+  nohup $JAVA $JAR_RUN_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS -cp $CLASSPATH $PROJ_OPTS "$@" > $CONSOLE_OUTPUT_FILE 2>&1 < /dev/null &
 else
-  # echo exec "$JAVA $JAR_RUNNER_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS" -cp "$CLASSPATH $PROJ_OPTS" "$@"
-  exec $JAVA $JAR_RUNNER_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS -cp $CLASSPATH $PROJ_OPTS "$@"
+  echo exec "$JAVA $JAR_RUN_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS" -cp "$CLASSPATH $PROJ_OPTS" "$@"
+  exec $JAVA $JAR_RUN_HEAP_OPTS $PROJ_JVM_PERFORMANCE_OPTS $PROJ_GC_LOG_OPTS $PROJ_JMX_OPTS -cp $CLASSPATH $PROJ_OPTS "$@"
 fi
