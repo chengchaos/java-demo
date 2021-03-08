@@ -55,4 +55,11 @@ public class MyTest {
             e.printStackTrace();
         }
     }
+
+
+    @Test
+    public void test2() {
+        String x = "\u624b\u673a\u53f7\u8f93\u5165\u4e0d\u7b26\u5408\u89c4\u5219";
+        System.out.println(x);
+    }
 }
