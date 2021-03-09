@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: double-token-demo
